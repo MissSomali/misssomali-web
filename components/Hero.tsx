@@ -9,7 +9,7 @@ const slides = [
   { id: 3, path: "/images/image3.jpeg" },
 ];
 
-const headlineWords = "BEAUTY IS KNOWING YOU BELONG ON THE STAGE".split(" ");
+const headlineWords = "YOU ALREADY KNOW YOU WERE MADE FOR THIS".split(" ");
 
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
