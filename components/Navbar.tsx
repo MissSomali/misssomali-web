@@ -8,9 +8,7 @@ const navLinks = [
   { name: "Home", href: "#home" },
   { name: "The Journey", href: "#journey" },
   { name: "Contestants", href: "#contestants" },
-  { name: "Apply", href: "#apply" },
   { name: "Events", href: "#events" },
-  { name: "Media", href: "#media" },
   { name: "About", href: "#about" },
   { name: "Contact", href: "#contact" },
 ];
@@ -59,71 +57,77 @@ export default function Navbar() {
             : "bg-transparent py-5 border-b border-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-          {/* Logo Far Left */}
-          <Link href="#home" className="flex items-center" onClick={() => handleLinkClick("Home")}>
-            <Image
-              src="/logo.png"
-              alt="Miss Somali Logo"
-              width={150}
-              height={45}
-              priority
-              className="w-auto h-9 md:h-11 object-contain transition-transform duration-300 hover:scale-102"
-            />
-          </Link>
-
-          {/* Nav Links Centered (Desktop) */}
-          <div className="hidden lg:flex items-center space-x-8 xl:space-x-10">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => handleLinkClick(link.name)}
-                className="relative py-2 text-[14px] font-medium tracking-[0.02em] leading-none text-white hover:text-[#BF9200] transition-colors duration-200 group"
-              >
-                <span>{link.name}</span>
-                <span className={`absolute bottom-0 left-0 w-full h-[1.5px] bg-gradient-to-r from-transparent via-[#BF9200] to-transparent shadow-[0_0_8px_#BF9200] transition-all duration-300 transform scale-x-0 group-hover:scale-x-100 ${
-                  activeLink === link.name ? "scale-x-100" : ""
-                }`} />
-              </a>
-            ))}
-          </div>
-
-          {/* CTA Button Far Right (Desktop) */}
-          <div className="hidden lg:block">
-            <a
-              href="#apply"
-              onClick={() => handleLinkClick("Apply")}
-              className="bg-gradient-to-r from-[#BF9200] to-[#D4A800] hover:from-[#D4A800] hover:to-[#BF9200] text-white px-7 py-3 rounded-none font-bold text-[14px] leading-none tracking-[0.02em] transition-all duration-300 shadow-[0_4px_14px_rgba(191,146,0,0.35)] hover:shadow-[0_6px_20px_rgba(191,146,0,0.55)] hover:-translate-y-0.5 active:translate-y-0 inline-block text-center"
-            >
-              Apply Now
-            </a>
-          </div>
-
-          {/* Hamburger Icon (Mobile/Tablet) */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden text-white hover:text-[#BF9200] focus:outline-none z-50 p-2"
-            aria-label="Toggle navigation menu"
-          >
-            <div className="w-6 h-5 relative flex flex-col justify-between">
-              <span
-                className={`w-full h-0.5 bg-white transition-all duration-300 rounded ${
-                  mobileMenuOpen ? "rotate-45 translate-y-2 bg-[#BF9200]" : ""
-                }`}
-              />
-              <span
-                className={`w-full h-0.5 bg-white transition-all duration-300 rounded ${
-                  mobileMenuOpen ? "opacity-0" : ""
-                }`}
-              />
-              <span
-                className={`w-full h-0.5 bg-white transition-all duration-300 rounded ${
-                  mobileMenuOpen ? "-rotate-45 -translate-y-2 bg-[#BF9200]" : ""
-                }`}
-              />
+        <div className="grid-container">
+          <div className="grid-12 items-center">
+            {/* Logo: Columns 1-3 on Desktop, 1-6 on Mobile */}
+            <div className="col-span-6 lg:col-span-3 flex items-center">
+              <Link href="#home" className="flex items-center" onClick={() => handleLinkClick("Home")}>
+                <Image
+                  src="/logo.png"
+                  alt="Miss Somali Logo"
+                  width={150}
+                  height={45}
+                  priority
+                  className="w-auto h-9 md:h-11 object-contain transition-transform duration-300 hover:scale-102"
+                />
+              </Link>
             </div>
-          </button>
+
+            {/* Nav Links: Columns 4-9 (Desktop) */}
+            <div className="hidden lg:flex lg:col-span-6 items-center justify-center space-x-8 xl:space-x-10">
+              {navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => handleLinkClick(link.name)}
+                  className="relative py-2 text-[14px] font-medium tracking-[0.02em] leading-none text-white hover:text-[#BF9200] transition-colors duration-200 group"
+                >
+                  <span>{link.name}</span>
+                  <span className={`absolute bottom-0 left-0 w-full h-[1.5px] bg-gradient-to-r from-transparent via-[#BF9200] to-transparent shadow-[0_0_8px_#BF9200] transition-all duration-300 transform scale-x-0 group-hover:scale-x-100 ${
+                    activeLink === link.name ? "scale-x-100" : ""
+                  }`} />
+                </a>
+              ))}
+            </div>
+
+            {/* CTA Button: Columns 10-12 (Desktop) */}
+            <div className="hidden lg:flex lg:col-span-3 items-center justify-end">
+              <a
+                href="#apply"
+                onClick={() => handleLinkClick("Apply")}
+                className="bg-gradient-to-r from-[#BF9200] to-[#D4A800] hover:from-[#D4A800] hover:to-[#BF9200] text-white px-7 py-3 rounded-none font-bold text-[14px] leading-none tracking-[0.02em] transition-all duration-300 shadow-[0_4px_14px_rgba(191,146,0,0.35)] hover:shadow-[0_6px_20px_rgba(191,146,0,0.55)] hover:-translate-y-0.5 active:translate-y-0 inline-block text-center"
+              >
+                Apply Now
+              </a>
+            </div>
+
+            {/* Hamburger Icon: Columns 7-12 (Mobile/Tablet) */}
+            <div className="col-span-6 lg:hidden flex items-center justify-end">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="text-white hover:text-[#BF9200] focus:outline-none z-50 p-2"
+                aria-label="Toggle navigation menu"
+              >
+                <div className="w-6 h-5 relative flex flex-col justify-between">
+                  <span
+                    className={`w-full h-0.5 bg-white transition-all duration-300 rounded ${
+                      mobileMenuOpen ? "rotate-45 translate-y-2 bg-[#BF9200]" : ""
+                    }`}
+                  />
+                  <span
+                    className={`w-full h-0.5 bg-white transition-all duration-300 rounded ${
+                      mobileMenuOpen ? "opacity-0" : ""
+                    }`}
+                  />
+                  <span
+                    className={`w-full h-0.5 bg-white transition-all duration-300 rounded ${
+                      mobileMenuOpen ? "-rotate-45 -translate-y-2 bg-[#BF9200]" : ""
+                    }`}
+                  />
+                </div>
+              </button>
+            </div>
+          </div>
         </div>
       </nav>
 

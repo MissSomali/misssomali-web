@@ -106,3 +106,65 @@ body {
   opacity: 0;
   animation: fadeIn 1s ease-out forwards;
 }
+
+/* 12-Column Grid and Responsive Margins */
+.grid-container {
+  width: 100%;
+  max-width: 85rem; /* 1360px maximum width for premium layout */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem; /* 24px default padding (consistent margin) */
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .grid-container {
+    padding-left: 3rem; /* 48px padding */
+    padding-right: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-container {
+    padding-left: 4.5rem; /* 72px padding */
+    padding-right: 4.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid-container {
+    padding-left: 6rem; /* 96px padding */
+    padding-right: 6rem;
+  }
+}
+
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 1.5rem; /* gap-x-6 */
+  row-gap: 2rem;      /* gap-y-8 */
+}
+
+@media (min-width: 768px) {
+  .grid-12 {
+    column-gap: 2rem; /* gap-x-8 */
+  }
+}
+
+/* Logo Ticker Marquee Animation */
+@keyframes logoTicker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.logo-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: logoTicker 25s linear infinite;
+}
+
+
