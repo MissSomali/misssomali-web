@@ -82,14 +82,14 @@ export default function Home() {
         <Hero />
         
         {/* Partners Section (Marquee Ticker) */}
-        <section className="bg-[#2C0A3B] py-8 overflow-hidden border-b border-[#E8C97A]/10">
+        <section className="bg-[#F5F0E8] py-8 overflow-hidden border-b border-[#E8C97A]/15">
           <div className="grid-container">
             <div className="grid-12 items-center">
               <div className="col-span-12">
                 <div className="relative w-full overflow-hidden">
                   {/* Left & right fade overlays for elegant masking */}
-                  <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#2C0A3B] to-transparent z-10 pointer-events-none" />
-                  <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#2C0A3B] to-transparent z-10 pointer-events-none" />
+                  <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#F5F0E8] to-transparent z-10 pointer-events-none" />
+                  <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#F5F0E8] to-transparent z-10 pointer-events-none" />
                   
                   {/* Ticker track */}
                   <div className="logo-ticker-track flex items-center gap-16 py-2">
@@ -97,7 +97,7 @@ export default function Home() {
                     {[...partners, ...partners, ...partners, ...partners].map((p, idx) => (
                       <div
                         key={idx}
-                        className="flex-shrink-0 w-44 h-16 flex items-center justify-center p-2 transition-all duration-300 filter grayscale opacity-100 hover:grayscale-0"
+                        className="flex-shrink-0 w-44 h-16 flex items-center justify-center p-2 transition-all duration-300 filter brightness-0 opacity-60 hover:brightness-100 hover:opacity-100"
                       >
                         <Image
                           src={p.src}
