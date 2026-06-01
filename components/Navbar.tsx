@@ -51,7 +51,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="fixed top-0 left-0 w-full z-50 bg-[#1A0524]/85 border-b border-[#E8C97A]/25 py-2.5 backdrop-blur-xl"
+        className="fixed top-0 left-0 w-full z-50 bg-[#1A0524]/70 py-3.5 backdrop-blur-xl"
       >
         <div className="grid-container">
           <div className="grid-12 items-center">
@@ -61,10 +61,10 @@ export default function Navbar() {
                 <Image
                   src="/logo.png"
                   alt="Miss Somali Logo"
-                  width={140}
-                  height={40}
+                  width={170}
+                  height={48}
                   priority
-                  className="w-auto h-8 md:h-9 object-contain transition-transform duration-300 hover:scale-102"
+                  className="w-auto h-10 md:h-11 object-contain transition-transform duration-300 hover:scale-102"
                 />
               </Link>
             </div>
@@ -76,15 +76,15 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   onClick={() => handleLinkClick(link.name)}
-                  className={`relative px-3 py-1.5 text-[13px] font-semibold tracking-[0.02em] leading-none transition-colors duration-200 ${
+                  className={`group relative px-3 py-1.5 text-[13px] font-semibold tracking-[0.02em] leading-none transition-colors duration-200 ${
                     activeLink === link.name
                       ? "text-[#E8C97A]"
-                      : "text-[#F5F0E8]/80 hover:text-[#FFFFFF]"
+                      : "text-[#F5F0E8]/80 hover:text-[#E8C97A]"
                   }`}
                 >
                   <span>{link.name}</span>
-                  <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-[2px] bg-[#E8C97A] rounded-full ${
-                    activeLink === link.name ? "block" : "hidden"
+                  <span className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-6 h-[2px] bg-[#E8C97A] rounded-full transition-opacity duration-200 ${
+                    activeLink === link.name ? "opacity-100" : "opacity-0 group-hover:opacity-100"
                   }`} />
                 </a>
               ))}
