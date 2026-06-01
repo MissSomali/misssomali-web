@@ -117,6 +117,25 @@ export default function Home() {
           </div>
         </section>
 
+        {/* About Miss Somali Intro Section */}
+        <section className="bg-[#FFFFFF] py-24 md:py-32 border-b border-[#0B2D6B]/5">
+          <div className="grid-container">
+            <div className="grid-12">
+              <div className="col-span-12 lg:col-span-10 text-left">
+                <span className="text-[12px] font-bold tracking-[0.12em] uppercase text-[#0B2D6B]/60 block mb-6">
+                  About Miss Somali
+                </span>
+                <h2 className="text-[20px] md:text-[24px] font-bold text-[#0B2D6B] mb-8">
+                  A Stage Built For Somali Women
+                </h2>
+                <p className="text-[24px] sm:text-[32px] md:text-[40px] lg:text-[48px] font-normal tracking-tight leading-[1.35] text-[#111111] max-w-5xl">
+                  Miss Somali was founded in Canada in 2025 to give Somali women a platform to be seen, celebrated, and heard on a global stage. We bring together talented Somali women from across the diaspora to compete, connect, and represent their culture with pride. <span className="text-[#8A8A8A]">One woman will be crowned Miss Somali. But every woman who steps forward changes what the world knows about us.</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Contestants Section */}
         <section id="contestants" className="bg-[#0B2D6B] py-28 border-t border-[#E8C97A]/5">
           <div className="grid-container">
