@@ -25,22 +25,21 @@ export default function Hero() {
               <div className="flex items-center space-x-2 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full backdrop-blur-md mb-6">
                 <span className="w-1.5 h-1.5 bg-[#E8C97A] rounded-full" />
                 <span className="text-[12px] font-semibold tracking-normal text-[#F5F0E8]/90">
-                  Miss Somali Pageant 2026
+                  Miss Somali 2026
                 </span>
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-[38px] lg:text-[64px] font-extrabold text-white tracking-[-0.02em] leading-[1.15] text-center lg:text-left">
-                Who Wears <br />
-                the Crown?
+              <h1 className="text-[38px] lg:text-[58px] font-extrabold text-white tracking-[-0.02em] leading-[1.15] text-center lg:text-left">
+                Miss Somali Is Searching For Its Next Queen.
               </h1>
 
               {/* Luxury Divider */}
               <div className="w-16 h-[2px] bg-[#E8C97A] my-6 rounded-full" />
               
               {/* Slogan */}
-              <p className="text-[15px] font-light text-[#F5F0E8]/70 leading-[1.7] max-w-[360px] text-center lg:text-left">
-                An extraordinary journey celebrating cultural heritage, intellect, and leadership. The search for the next global ambassador begins here.
+              <p className="text-[15px] font-light text-[#F5F0E8]/70 leading-[1.7] max-w-[420px] text-center lg:text-left">
+                Are you the woman who will wear the crown and represent Somali women on the world stage?
               </p>
 
               {/* CTA Buttons */}
@@ -49,18 +48,16 @@ export default function Hero() {
                   href="#apply"
                   className="w-full sm:w-auto relative bg-[#E8C97A] text-[#1A0524] px-8 py-4 rounded-full font-bold text-[14px] leading-none tracking-[0.02em] transition-all duration-300 shadow-[0_5px_25px_rgba(232,201,122,0.3)] hover:shadow-[0_8px_35px_rgba(232,201,122,0.5)] hover:-translate-y-0.5 active:translate-y-0 inline-block text-center border border-[#E8C97A]/25"
                 >
-                  Register as Delegate
+                  Apply Now
                 </a>
                 <a
                   href="#journey"
-                  className="w-full sm:w-auto flex items-center justify-center space-x-3 bg-white/5 hover:bg-white/10 text-white px-8 py-4 rounded-full border border-white/10 hover:border-[#E8C97A]/30 transition-all duration-300 group"
+                  className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-white/5 hover:bg-white/10 text-white px-8 py-4 rounded-full border border-white/10 hover:border-[#E8C97A]/30 transition-all duration-300 group"
                 >
-                  <span className="w-5 h-5 rounded-full bg-[#E8C97A]/25 flex items-center justify-center text-[#E8C97A] group-hover:bg-[#E8C97A] group-hover:text-[#1A0524] transition-all duration-300">
-                    <svg className="w-2.5 h-2.5 ml-0.5 fill-current" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </span>
-                  <span className="text-[14px] font-bold tracking-[0.02em] leading-none">Watch Journey</span>
+                  <span className="text-[14px] font-bold tracking-[0.02em] leading-none">Learn More</span>
+                  <svg className="w-4 h-4 text-[#E8C97A] group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                  </svg>
                 </a>
               </div>
 
