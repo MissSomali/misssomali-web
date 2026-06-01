@@ -17,9 +17,7 @@ const texts = {
   journeyPhase3Number: "03",
   journeyPhase3Title: "Grand Coronation",
   journeyPhase3Desc: "The final stage where delegates represent their platforms on a global stage, culminating in the crowning of Miss Somali 2026.",
-  contestantsLabel: "The Delegates",
-  contestantsTitle: "Meet the Contestants",
-  contestantsDesc: "Meet the inspiring young women from across the globe representing their cultural heritage with grace and intellect.",
+
   partnersLabel: "Global Affiliations & Partners",
   eventsLabel: "Key Highlights",
   eventsTitle: "Upcoming Events",
@@ -48,12 +46,7 @@ const texts = {
   footerTerms: "Terms of Service"
 };
 
-const contestants = [
-  { id: 1, name: "Khadija Omar", region: "Mogadishu", image: "/images/contestant1.png" },
-  { id: 2, name: "Fatuma Ibrahim", region: "Hargeisa", image: "/images/contestant2.png" },
-  { id: 3, name: "Halima Yusuf", region: "Garowe", image: "/images/contestant3.png" },
-  { id: 4, name: "Yasmin Warsame", region: "Kismayo", image: "/images/contestant4.png" },
-];
+
 
 const trendingContestants = [
   { id: 1, name: "Hodan Warsame", image: "/images/contestant1.jpeg", rank: "Trending #1" },
@@ -224,47 +217,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Contestants Section */}
-        <section id="contestants" className="bg-[#0B2D6B] py-28 border-t border-[#E8C97A]/5">
-          <div className="grid-container">
-            <div className="grid-12">
-              <div className="col-span-12 text-center mb-16">
-                <span className="text-[12px] font-semibold tracking-[0.02em] leading-[1.7] text-[#E8C97A] block mb-2">
-                  {texts.contestantsLabel}
-                </span>
-                <h2 className="text-[28px] lg:text-[40px] font-bold text-[#FFFFFF] tracking-[-0.02em] leading-[1.15] mb-6">
-                  {texts.contestantsTitle}
-                </h2>
-                <p className="text-[#F5F0E8]/70 text-[16px] font-normal leading-[1.7] tracking-normal max-w-2xl mx-auto">
-                  {texts.contestantsDesc}
-                </p>
-              </div>
 
-              {/* Contestant Cards */}
-              {contestants.map((c) => (
-                <div key={c.id} className="col-span-12 sm:col-span-6 lg:col-span-3 bg-[#0D3A8A] border border-[#0D3A8A] hover:border-[#E8C97A]/40 overflow-hidden transition-all duration-300 group shadow-md hover:shadow-lg flex flex-col">
-                  <div className="relative h-[300px] w-full overflow-hidden">
-                    <Image
-                      src={c.image}
-                      alt={c.name}
-                      fill
-                      sizes="(max-w-768px) 100vw, (max-w-1200px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="p-5 bg-[#0D3A8A] border-t border-[#071E4A]/20 flex-1 flex flex-col justify-center">
-                    <span className="text-[12px] font-semibold tracking-normal text-[#E8C97A] bg-[#E8C97A]/10 border border-[#E8C97A]/20 px-2.5 py-1 inline-block self-start mb-2">
-                      {c.region}
-                    </span>
-                    <h3 className="text-[20px] font-semibold text-[#FFFFFF] tracking-tight leading-tight">
-                      {c.name}
-                    </h3>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* Events Section */}
         <section id="events" className="bg-[#071E4A] py-28 border-t border-[#E8C97A]/5">
@@ -398,10 +351,16 @@ export default function Home() {
                 {texts.footerQuickLinks}
               </h4>
               <ul className="flex flex-col gap-3 text-[13px] font-normal text-[#F5F0E8]/85">
-                {["Home", "The Journey", "Contestants", "Events", "About"].map((link) => (
-                  <li key={link}>
-                    <a href={`#${link.toLowerCase().replace(" ", "")}`} className="hover:text-[#F0D898] transition-colors duration-200">
-                      {link}
+                {[
+                  { name: "Home", href: "#home" },
+                  { name: "The Journey", href: "#journey" },
+                  { name: "Contestants", href: "#trending" },
+                  { name: "Events", href: "#events" },
+                  { name: "About", href: "#about" }
+                ].map((link) => (
+                  <li key={link.name}>
+                    <a href={link.href} className="hover:text-[#F0D898] transition-colors duration-200">
+                      {link.name}
                     </a>
                   </li>
                 ))}
