@@ -121,9 +121,8 @@ export default function Home() {
         <section className="bg-[#FFFFFF] py-20 md:py-28 border-b border-[#0B2D6B]/5">
           <div className="grid-container">
             <div className="grid-12 items-center gap-y-12 lg:gap-x-12">
-              
-              {/* Left Column: Text Content (Impressive Editorial Styling) */}
-              <div className="col-span-12 lg:col-span-7 flex flex-col text-left items-start">
+                            {/* Left Column: Text Content (Impressive Editorial Styling) */}
+              <div className="col-span-12 lg:col-span-6 flex flex-col text-left items-start">
                 {/* Pill Badge */}
                 <div className="mb-6">
                   <span className="text-[11px] font-bold tracking-[0.08em] uppercase text-[#0B2D6B] bg-[#E8C97A]/15 border border-[#E8C97A]/30 px-3.5 py-1 rounded-full inline-block">
@@ -137,7 +136,7 @@ export default function Home() {
                 </h2>
                 
                 {/* Impressive Lead Body Text */}
-                <p className="text-[17px] sm:text-[20px] font-light leading-[1.65] text-[#111111]/90 max-w-2xl">
+                <p className="text-[17px] sm:text-[20px] font-light leading-[1.65] text-[#111111]/90 max-w-xl">
                   Miss Somali was founded in Canada in 2025 to give Somali women a platform to be seen, celebrated, and heard on a global stage. We bring together talented Somali women from across the diaspora to compete, connect, and represent their culture with pride.
                 </p>
 
@@ -149,15 +148,43 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Right Column: Image with rounded radius, no crop, no hovered border */}
-              <div className="col-span-12 lg:col-span-5">
-                <Image
-                  src="/images/aboutus.jpeg"
-                  alt="About Miss Somali Pageant"
-                  width={600}
-                  height={450}
-                  className="w-full h-auto rounded-2xl"
-                />
+              {/* Right Column: Image Grid (Matching Gargaara/Pearl style) */}
+              <div className="col-span-12 lg:col-span-6">
+                <div className="grid grid-cols-12 gap-4 h-[380px] sm:h-[480px] lg:h-[520px]">
+                  {/* Left Big Image */}
+                  <div className="col-span-7 h-full relative rounded-3xl overflow-hidden shadow-sm">
+                    <Image
+                      src="/images/aboutus.jpeg"
+                      alt="About Miss Somali Pageant - Main"
+                      fill
+                      sizes="(max-w-768px) 100vw, 40vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  {/* Right Two Smaller Stacked Images */}
+                  <div className="col-span-5 flex flex-col gap-4 h-full">
+                    {/* Top Smaller Image */}
+                    <div className="relative flex-1 rounded-3xl overflow-hidden shadow-sm">
+                      <Image
+                        src="/images/aboutus2.jpeg"
+                        alt="About Miss Somali Pageant - Ceremony"
+                        fill
+                        sizes="(max-w-768px) 50vw, 20vw"
+                        className="object-cover"
+                      />
+                    </div>
+                    {/* Bottom Smaller Image */}
+                    <div className="relative flex-1 rounded-3xl overflow-hidden shadow-sm">
+                      <Image
+                        src="/images/aboutus3.jpeg"
+                        alt="About Miss Somali Pageant - Team"
+                        fill
+                        sizes="(max-w-768px) 50vw, 20vw"
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
 
             </div>
