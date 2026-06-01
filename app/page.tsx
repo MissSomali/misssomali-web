@@ -50,9 +50,9 @@ const texts = {
 
 const contestants = [
   { id: 1, name: "Hodan Warsame", image: "/images/contestant1.jpeg", rank: "Contestant No. 1" },
-  { id: 2, name: "Ayan Cabdi", image: "/images/contestant2.jpeg", rank: "Contestant No. 2" },
-  { id: 3, name: "Ifrah Maxamed", image: "/images/contestant3.jpeg", rank: "Contestant No. 3" },
-  { id: 4, name: "Sahra Nuur", image: "/images/contestant4.jpeg", rank: "Contestant No. 4" },
+  { id: 2, name: "Ayan Abdi", image: "/images/contestant2.jpeg", rank: "Contestant No. 2" },
+  { id: 3, name: "Ifrah Mohamed", image: "/images/contestant3.jpeg", rank: "Contestant No. 3" },
+  { id: 4, name: "Sahra Nur", image: "/images/contestant4.jpeg", rank: "Contestant No. 4" },
   { id: 5, name: "Ilhan Osman", image: "/images/contestant5.jpeg", rank: "Contestant No. 5" },
 ];
 
