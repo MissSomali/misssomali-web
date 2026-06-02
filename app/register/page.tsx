@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { authClient } from "@/lib/auth/client";
-import { UserPlus, Loader2, AlertCircle, MailCheck } from "lucide-react";
+import { UserPlus, Loader2, AlertCircle, MailCheck, ShieldCheck, RefreshCw } from "lucide-react";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -17,6 +17,13 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [verificationSent, setVerificationSent] = useState(false);
+
+  // Email verification verification states
+  const [verificationCode, setVerificationCode] = useState("");
+  const [verifyingCode, setVerifyingCode] = useState(false);
+  const [verificationError, setVerificationError] = useState("");
+  const [verificationSuccessMessage, setVerificationSuccessMessage] = useState("");
+  const [resendingEmail, setResendingEmail] = useState(false);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,6 +99,76 @@ export default function RegisterPage() {
     }
   };
 
+  const handleVerifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!verificationCode.trim()) return;
+    setVerifyingCode(true);
+    setVerificationError("");
+    setVerificationSuccessMessage("");
+
+    try {
+      const { data, error } = await authClient.emailOtp.verifyEmail({
+        email,
+        otp: verificationCode.trim(),
+      });
+
+      if (error) {
+        setVerificationError(error.message || "Invalid verification code.");
+        setVerifyingCode(false);
+        return;
+      }
+
+      setVerificationSuccessMessage("Email verified successfully! Creating profile...");
+
+      // Wait a short duration to ensure session cookie is registered by the browser
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
+      // Attempt to create the user profile database entry
+      const profileRes = await fetch("/api/portal/profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fullName, phone, country }),
+      });
+
+      if (!profileRes.ok) {
+        console.error("Failed to create profile database entry after verification:", profileRes.status);
+      }
+
+      // Redirect to portal dashboard
+      router.push("/portal");
+    } catch (err) {
+      console.error("Verification error:", err);
+      setVerificationError(err instanceof Error ? err.message : "An unexpected error occurred during verification.");
+    } finally {
+      setVerifyingCode(false);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    setResendingEmail(true);
+    setVerificationError("");
+    setVerificationSuccessMessage("");
+
+    try {
+      const { error } = await authClient.sendVerificationEmail({
+        email,
+        callbackURL: window.location.origin + "/portal",
+      });
+
+      if (error) {
+        setVerificationError(error.message || "Failed to resend verification email.");
+        return;
+      }
+
+      setVerificationSuccessMessage("Verification code/link resent! Check your inbox.");
+    } catch (err) {
+      console.error("Resend error:", err);
+      setVerificationError(err instanceof Error ? err.message : "An unexpected error occurred while resending.");
+    } finally {
+      setResendingEmail(false);
+    }
+  };
+
   // ── Email verification pending screen ────────────────────────────────────
   if (verificationSent) {
     return (
@@ -108,27 +185,104 @@ export default function RegisterPage() {
               />
             </div>
           </Link>
+          <h2 className="text-center text-3xl font-extrabold text-[#071E4A] tracking-tight">
+            Verify Your Email
+          </h2>
+          <p className="mt-2 text-center text-sm text-[#071E4A]/70">
+            We sent a verification link or code to <span className="font-semibold text-[#071E4A]">{email}</span>
+          </p>
         </div>
+
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-[#FFFFFF] py-10 px-4 border border-[#E8E8E8] shadow-lg rounded-xl sm:px-10 text-center">
-            <div className="flex justify-center mb-4">
-              <div className="bg-[#E8C97A]/20 rounded-full p-4">
-                <MailCheck className="h-10 w-10 text-[#071E4A]" />
+          <div className="bg-[#FFFFFF] py-8 px-4 border border-[#E8E8E8] shadow-lg rounded-xl sm:px-10">
+            
+            {verificationError && (
+              <div className="mb-4 bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <AlertCircle className="h-5 w-5 text-red-500" aria-hidden="true" />
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-xs font-semibold text-red-800">{verificationError}</p>
+                  </div>
+                </div>
               </div>
+            )}
+
+            {verificationSuccessMessage && (
+              <div className="mb-4 bg-green-50 border-l-4 border-green-500 p-4 rounded-md">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <MailCheck className="h-5 w-5 text-green-500" aria-hidden="true" />
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-xs font-semibold text-green-800">{verificationSuccessMessage}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* OTP Form */}
+            <form onSubmit={handleVerifyCode} className="space-y-4">
+              <div>
+                <label htmlFor="verificationCode" className="block text-xs font-bold uppercase tracking-wider text-[#071E4A]">
+                  Verification Code
+                </label>
+                <p className="text-xs text-[#071E4A]/60 mb-2">
+                  If you received a 6-digit verification code, enter it below:
+                </p>
+                <div className="mt-1">
+                  <input
+                    id="verificationCode"
+                    name="verificationCode"
+                    type="text"
+                    required
+                    value={verificationCode}
+                    onChange={(e) => setVerificationCode(e.target.value)}
+                    className="appearance-none block w-full px-4 py-3 border border-[#E8E8E8] rounded-lg shadow-sm placeholder-[#071E4A]/30 focus:outline-none focus:ring-2 focus:ring-[#0B2D6B] focus:border-[#0B2D6B] text-center tracking-widest font-mono text-xl text-[#071E4A]"
+                    placeholder="123456"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  disabled={verifyingCode}
+                  className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-bold text-[#071E4A] bg-[#E8C97A] hover:bg-[#F0D898] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0B2D6B] disabled:opacity-50"
+                >
+                  {verifyingCode ? (
+                    <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                  ) : (
+                    <ShieldCheck className="h-5 w-5 mr-2" />
+                  )}
+                  Verify Account
+                </button>
+              </div>
+            </form>
+
+            <div className="mt-6 border-t border-[#E8E8E8] pt-6 flex flex-col space-y-3">
+              <button
+                type="button"
+                onClick={handleResendVerification}
+                disabled={resendingEmail}
+                className="w-full flex justify-center items-center py-3 px-4 border border-[#0B2D6B]/20 rounded-full shadow-sm text-sm font-semibold text-[#0B2D6B] bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0B2D6B] disabled:opacity-50"
+              >
+                {resendingEmail ? (
+                  <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                ) : (
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                )}
+                Resend Code / Link
+              </button>
+
+              <Link
+                href="/login"
+                className="w-full text-center text-sm font-bold text-[#071E4A] hover:text-[#0B2D6B] transition-colors py-2"
+              >
+                Go to Sign In
+              </Link>
             </div>
-            <h3 className="text-xl font-extrabold text-[#071E4A] mb-2">Check your inbox</h3>
-            <p className="text-sm text-[#071E4A]/70 mb-6">
-              A verification link has been sent to{" "}
-              <span className="font-semibold text-[#071E4A]">{email}</span>.
-              <br />
-              Please verify your email address before signing in.
-            </p>
-            <Link
-              href="/login"
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-bold text-[#071E4A] bg-[#E8C97A] hover:bg-[#F0D898] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0B2D6B]"
-            >
-              Go to Sign In
-            </Link>
           </div>
         </div>
       </div>
