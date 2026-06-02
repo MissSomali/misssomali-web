@@ -87,19 +87,18 @@ export default function Home() {
 
     const updateCountdown = () => {
       const now = new Date().getTime();
-      const difference = targetDate - now;
 
+      // Grand Finale Countdown
+      const difference = targetDate - now;
       if (difference <= 0) {
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        return;
+      } else {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+        setTimeLeft({ days, hours, minutes, seconds });
       }
-
-      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-      setTimeLeft({ days, hours, minutes, seconds });
     };
 
     updateCountdown();
@@ -352,30 +351,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Apply CTA Section */}
-        <section id="apply-cta" className="bg-[#E8C97A] py-20 md:py-24 text-center">
-          <div className="grid-container">
-            <div className="grid-12">
-              <div className="col-span-12 max-w-3xl mx-auto flex flex-col items-center">
-                <h2 className="text-[32px] sm:text-[44px] md:text-[50px] font-extrabold text-[#071E4A] tracking-tight leading-[1.15] mb-6">
-                  Your Moment Will Not Wait.
-                </h2>
-                <p className="text-[#071E4A]/85 text-[16px] sm:text-[18px] font-light leading-[1.65] mb-4">
-                  Applications for Miss Somali 2026 are open now. This is your chance to represent your culture, your community, and your story on the world stage.
-                </p>
-                <p className="text-[#071E4A]/90 text-[14px] sm:text-[15px] font-bold italic">
-                  Applications close soon. Do not miss your chance.
-                </p>
-                <a
-                  href="#apply"
-                  className="bg-[#071E4A] hover:bg-[#0B2D6B] text-[#FFFFFF] px-10 py-4 rounded-full font-bold text-[14px] leading-none tracking-[0.02em] transition-colors duration-200 mt-8 inline-block shadow-md hover:shadow-lg"
-                >
-                  Apply Now
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
+
 
         {/* Journey Section */}
         <section id="journey" className="bg-[#071E4A] py-28 border-t border-[#E8C97A]/5">
@@ -523,6 +499,39 @@ export default function Home() {
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Improved Apply CTA Section */}
+        <section id="apply-cta" className="relative py-12 md:py-16 overflow-hidden bg-[#E8C97A] border-t border-[#E8C97A]/20">
+          {/* Grid line low opacity bg (dark navy blue grid lines on yellowish background) */}
+          <div className="absolute inset-0 pointer-events-none" style={{
+            backgroundImage: `linear-gradient(to right, rgba(7, 30, 74, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(7, 30, 74, 0.05) 1px, transparent 1px)`,
+            backgroundSize: '60px 60px'
+          }} />
+
+          <div className="grid-container relative z-10">
+            <div className="grid-12 items-center">
+              {/* Left Column: Texts */}
+              <div className="col-span-12 md:col-span-8 lg:col-span-9 flex flex-col text-left">
+                <h2 className="text-[28px] sm:text-[34px] md:text-[38px] font-black text-[#071E4A] tracking-tight leading-[1.2] mb-3">
+                  Applications for Miss Somali 2026 are open now.
+                </h2>
+                <p className="text-[#071E4A]/85 text-[15px] sm:text-[16px] md:text-[17px] font-light leading-[1.6]">
+                  This is your chance to represent your culture, your community, and your story on the world stage. <b className="font-bold text-[#071E4A]"> Applications close soon. Do not miss your chance. </b>
+                </p>
+              </div>
+
+              {/* Right Column: Button */}
+              <div className="col-span-12 md:col-span-4 lg:col-span-3 flex md:justify-end items-center mt-6 md:mt-0">
+                <a
+                  href="#apply"
+                  className="bg-[#071E4A] hover:bg-[#0B2D6B] text-[#FFFFFF] px-10 py-4 rounded-full font-bold text-[14px] leading-none tracking-[0.02em] transition-all duration-300 shadow-md hover:shadow-lg inline-block text-center whitespace-nowrap"
+                >
+                  Apply Now
+                </a>
               </div>
             </div>
           </div>
