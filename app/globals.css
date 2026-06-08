@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #0B2D6B;
   --foreground: #F5F0E8;
@@ -15,6 +17,38 @@
   --color-brand-white: #FFFFFF;
   --color-brand-light-gray: #E8E8E8;
   --font-sans: var(--font-plus-jakarta-sans);
+
+  --color-primary: #0B2D6B;
+  --color-stroke: #e6ebf1;
+  --color-stroke-dark: #27303e;
+
+  --color-dark-2: #1f2a37;
+  --color-dark-3: #374151;
+  --color-dark-4: #4b5563;
+  --color-dark-5: #6b7280;
+  --color-dark-6: #9ca3af;
+  --color-dark-7: #d1d5db;
+  --color-dark-8: #e5e7eb;
+  --color-dark: #111928;
+
+  --color-gray-1: #f9fafb;
+  --color-gray-2: #f3f4f6;
+  --color-gray-3: #e5e7eb;
+  --color-gray-4: #d1d5db;
+  --color-gray-5: #9ca3af;
+  --color-gray-6: #6b7280;
+  --color-gray-7: #374151;
+  --color-gray: #eff4fb;
+  --color-gray-dark: #122031;
+
+  --color-green: #22ad5c;
+  --color-green-dark: #1a8245;
+
+  --color-red: #f23030;
+  --color-red-dark: #e10e0e;
+
+  --color-blue: #3c50e0;
+  --color-blue-dark: #1c3fb7;
 }
 
 body {
@@ -231,5 +265,103 @@ body {
     linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
 }
+
+@utility no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@utility custom-scrollbar {
+  @apply overflow-auto;
+
+  &::-webkit-scrollbar {
+    @apply size-2;
+  }
+
+  &::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply dark:bg-stroke-dark relative flex-1 rounded-full bg-neutral-200/40;
+  }
+}
+
+.apexcharts-legend-text {
+  @apply text-dark-5! dark:text-dark-6!;
+}
+
+.apexcharts-text {
+  @apply fill-dark-5! dark:fill-dark-6!;
+}
+
+.apexcharts-yaxis-label {
+  @apply text-xs;
+}
+
+.apexcharts-xaxis-label {
+  @apply text-sm font-medium;
+}
+
+.apexcharts-xcrosshairs {
+  @apply fill-stroke! dark:fill-dark-3!;
+}
+
+.apexcharts-gridline {
+  @apply stroke-stroke! dark:stroke-dark-3!;
+}
+
+.apexcharts-series.apexcharts-pie-series path {
+  @apply dark:stroke-transparent!;
+}
+
+.apexcharts-legend-series {
+  @apply inline-flex! gap-1.5;
+}
+
+.apexcharts-tooltip.apexcharts-theme-light {
+  @apply text-dark! shadow-md! dark:border-dark-3! dark:bg-gray-dark! rounded-[7px]! text-base! font-medium! dark:text-white!;
+}
+
+.apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title {
+  @apply dark:border-dark-3! dark:bg-dark-2!;
+}
+
+.apexcharts-xaxistooltip,
+.apexcharts-yaxistooltip {
+  @apply dark:border-dark-2! dark:bg-dark-2! dark:text-dark-3!;
+}
+
+.apexcharts-xaxistooltip-bottom:after {
+  @apply border-b-gray! dark:border-b-dark!;
+}
+
+.apexcharts-xaxistooltip-bottom:before {
+  @apply border-b-gray! dark:border-b-dark!;
+}
+
+.apexcharts-xaxistooltip-bottom {
+  @apply bg-gray! text-dark! dark:bg-dark! rounded-sm! border-none! text-sm! font-medium! dark:text-white!;
+}
+
+.apexcharts-tooltip-series-group {
+  @apply pr-3.5! pb-px! pl-2.5!;
+}
+
+.apexcharts-tooltip-series-group .apexcharts-tooltip-text {
+  @apply text-base! font-medium!;
+}
+
+.apexcharts-datalabels-group .apexcharts-datalabel-label {
+  @apply fill-dark-5! dark:fill-dark-6!;
+}
+
+.apexcharts-datalabels-group .apexcharts-datalabel-value {
+  @apply fill-dark! dark:fill-white!;
+}
+
 
 
