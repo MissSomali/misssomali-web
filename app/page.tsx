@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import HowItWorks from "@/components/HowItWorks";
 import { Calendar, MapPin, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -268,6 +269,8 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <HowItWorks />
 
         {/* Grand Finale Event Section */}
         <section id="grand-finale" className="bg-[#071E4A] py-28 border-b border-white/5 relative overflow-hidden">
