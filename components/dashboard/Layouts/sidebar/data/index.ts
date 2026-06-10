@@ -22,6 +22,18 @@ export const NAV_DATA = [
         icon: Icons.User,
         items: [],
       },
+      {
+        title: "Events",
+        url: "/events",
+        icon: Icons.Calendar,
+        items: [],
+      },
+      {
+        title: "Blogs",
+        url: "/blogs",
+        icon: Icons.Table,
+        items: [],
+      },
     ],
   },
   {

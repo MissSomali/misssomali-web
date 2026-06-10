@@ -42,8 +42,8 @@ export function Header({
         <Link href={"/"} className="2xsm:ml-4 ml-2 max-[430px]:hidden">
           <Image
             src={"/logo.png"}
-            width={32}
-            height={32}
+            width={20}
+            height={20}
             alt="Miss Somali"
             role="presentation"
             className="object-contain"

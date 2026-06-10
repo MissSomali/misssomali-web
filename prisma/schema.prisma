@@ -150,17 +150,42 @@ model ContestantPhoto {
 }
 
 model Event {
-  id          String   @id @default(uuid())
-  title       String
-  description String   @db.Text
-  location    String
-  eventDate   DateTime
-  coverImage  String
-  isPublished Boolean  @default(false)
-  createdAt   DateTime @default(now())
+  id                  String   @id @default(uuid())
+  title               String
+  subtitle            String?
+  description         String   @db.Text
+  location            String
+  coverImage          String
+  eventDate           DateTime
+  countdownDate       DateTime?
+  featuredContestants Json?
+  ticketLink          String?
+  isGrandFinale       Boolean  @default(false)
+  isFeatured          Boolean  @default(false)
+  isPublished         Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now()) @updatedAt
 
   @@index([isPublished])
   @@index([eventDate])
+  @@index([isGrandFinale])
+}
+
+model Blog {
+  id          String    @id @default(uuid())
+  title       String
+  slug        String    @unique
+  excerpt     String?   @db.Text
+  content     String    @db.Text
+  coverImage  String
+  author      String
+  status      String    @default("draft")
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+
+  @@index([slug])
+  @@index([status])
 }
 
 model MediaGallery {

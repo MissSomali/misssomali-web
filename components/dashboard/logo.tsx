@@ -5,8 +5,8 @@ export function Logo() {
     <div className="flex items-center">
       <Image
         src="/logo.png"
-        width={140}
-        height={56}
+        width={84}
+        height={34}
         className="object-contain"
         alt="Miss Somali logo"
         quality={100}
