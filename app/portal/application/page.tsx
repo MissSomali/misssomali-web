@@ -5,9 +5,12 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, ArrowLeft, ArrowRight, Save, Lock, Upload, Image as ImageIcon, CheckCircle } from "lucide-react";
+import { Loader2, ArrowLeft, ArrowRight, Save, Lock, Upload, Image as ImageIcon, CheckCircle, Calendar as CalendarIcon } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import flatpickr from "flatpickr";
+import * as Popover from "@radix-ui/react-popover";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css";
+import { format } from "date-fns";
 
 // Form validation schema
 const applicationSchema = z.object({
@@ -51,6 +54,7 @@ export default function ApplicationPage() {
   const [photos, setPhotos] = useState<any[]>([]);
   const [profileUploadProgress, setProfileUploadProgress] = useState<number | null>(null);
   const [fullBodyUploadProgress, setFullBodyUploadProgress] = useState<number | null>(null);
+  const [dobOpen, setDobOpen] = useState(false);
 
   const {
     register,
@@ -160,34 +164,28 @@ export default function ApplicationPage() {
     return () => clearTimeout(timer);
   }, [formValues, isSubmitted, initialLoading]);
 
-  // Initialize flatpickr on Date of Birth field
-  useEffect(() => {
-    if (initialLoading || activeStep !== 0) return;
+  // Date of Birth handling for react-day-picker
+  const dobValue = watch("dateOfBirth");
+  const selectedDate = dobValue ? (() => {
+    const parts = dobValue.split("-");
+    if (parts.length === 3) {
+      return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+    }
+    return undefined;
+  })() : undefined;
 
-    // Calculate maximum date allowed (18 years ago today)
-    const today = new Date();
-    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-
-    const fp = flatpickr("#date-of-birth-picker", {
-      mode: "single",
-      dateFormat: "Y-m-d",
-      maxDate: maxDate,
-      defaultDate: watch("dateOfBirth") || undefined,
-      onChange: (selectedDates, dateStr) => {
-        setValue("dateOfBirth", dateStr, { shouldValidate: true, shouldDirty: true });
-      },
-    });
-
-    return () => {
-      if (fp) {
-        if (Array.isArray(fp)) {
-          fp.forEach((instance) => instance.destroy());
-        } else {
-          fp.destroy();
-        }
-      }
-    };
-  }, [initialLoading, activeStep, setValue, watch]);
+  const handleDateSelect = (date: Date | undefined) => {
+    if (date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const formatted = `${year}-${month}-${day}`;
+      setValue("dateOfBirth", formatted, { shouldValidate: true, shouldDirty: true });
+      setDobOpen(false);
+    } else {
+      setValue("dateOfBirth", "", { shouldValidate: true, shouldDirty: true });
+    }
+  };
 
   // Photo reader helper
   function readFileAsDataURL(file: File) {
@@ -463,13 +461,39 @@ export default function ApplicationPage() {
 
                 <div className="col-span-1 md:col-span-2">
                   <label className="mb-2 block text-body-sm font-medium">Date of Birth</label>
-                  <input
-                    id="date-of-birth-picker"
-                    type="text"
-                    placeholder="Select Date of Birth"
-                    {...register("dateOfBirth")}
-                    className="h-12 w-full rounded-lg border border-stroke bg-gray-2 px-4 text-sm outline-none focus:border-primary dark:border-dark-3 dark:bg-dark-2 text-dark dark:text-white"
-                  />
+                  <Popover.Root open={dobOpen} onOpenChange={setDobOpen}>
+                    <Popover.Trigger asChild>
+                      <button
+                        type="button"
+                        className="h-12 w-full rounded-lg border border-stroke bg-gray-2 px-4 text-sm outline-none focus:border-primary dark:border-dark-3 dark:bg-dark-2 text-dark dark:text-white flex items-center justify-between text-left cursor-pointer transition-all hover:bg-gray-300 dark:hover:bg-dark-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <span className={formValues.dateOfBirth ? "text-dark dark:text-white" : "text-dark-5"}>
+                          {formValues.dateOfBirth
+                            ? format(selectedDate || new Date(formValues.dateOfBirth), "PPP")
+                            : "Select Date of Birth"}
+                        </span>
+                        <CalendarIcon className="h-4 w-4 text-dark-5" />
+                      </button>
+                    </Popover.Trigger>
+                    <Popover.Portal>
+                      <Popover.Content
+                        className="z-[9999] rounded-xl border border-stroke bg-white p-4 shadow-lg dark:border-dark-3 dark:bg-gray-dark"
+                        align="start"
+                        sideOffset={5}
+                      >
+                        <DayPicker
+                          mode="single"
+                          captionLayout="dropdown"
+                          startMonth={new Date(1940, 0)}
+                          endMonth={new Date(new Date().getFullYear() - 18, 11)}
+                          selected={selectedDate}
+                          onSelect={handleDateSelect}
+                          className="dark:text-white"
+                        />
+                      </Popover.Content>
+                    </Popover.Portal>
+                  </Popover.Root>
+                  <input type="hidden" {...register("dateOfBirth")} />
                   {errors.dateOfBirth && <p className="text-red text-xs mt-1">{errors.dateOfBirth.message}</p>}
                 </div>
               </div>
