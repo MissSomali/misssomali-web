@@ -1,10 +1,51 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
+interface EventData {
+  id: string;
+  title: string;
+  subtitle: string | null;
+  description: string;
+  location: string;
+  coverImage: string;
+  eventDate: string;
+  ticketLink: string | null;
+}
+
 export default function FeaturedEvent() {
+  const [event, setEvent] = useState<EventData | null>(null);
+
+  useEffect(() => {
+    fetch("/api/events")
+      .then((res) => {
+        if (res.ok) return res.json();
+        return null;
+      })
+      .then((data) => {
+        if (data) setEvent(data);
+      })
+      .catch((err) => console.error("Error fetching featured event:", err));
+  }, []);
+
+  const title = event ? event.title : "Miss Somali 2026 Grand Finale.";
+  const slogan = event 
+    ? (event.subtitle || event.description)
+    : "The pinnacle of a global journey. A live showcase of confidence, culture, and leadership in Nairobi, Kenya.";
+  const location = event ? event.location : "Nairobi, Kenya";
+  const date = event 
+    ? new Date(event.eventDate).toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "August 25, 2026";
+  const coverImage = event ? event.coverImage : "/images/image1.png";
+  const ticketLink = event?.ticketLink || "#grand-finale";
+
   return (
     <section
       id="grand-finale"
@@ -44,7 +85,7 @@ export default function FeaturedEvent() {
                 transition={{ delay: 0.1 }}
                 className="text-[38px] lg:text-[58px] font-extrabold text-white tracking-[-0.02em] leading-[1.15] text-center lg:text-left"
               >
-                Miss Somali 2026 Grand Finale.
+                {title}
               </motion.h2>
 
               {/* Luxury Divider */}
@@ -64,7 +105,7 @@ export default function FeaturedEvent() {
                 transition={{ delay: 0.3 }}
                 className="text-[15px] font-light text-[#F5F0E8]/70 leading-[1.7] max-w-[420px] text-center lg:text-left mb-6"
               >
-                The pinnacle of a global journey. A live showcase of confidence, culture, and leadership in Nairobi, Kenya.
+                {slogan}
               </motion.p>
 
               {/* Event Details (Mini) */}
@@ -77,11 +118,11 @@ export default function FeaturedEvent() {
               >
                  <div className="flex flex-col items-center lg:items-start text-[#F5F0E8]">
                    <span className="text-[10px] uppercase tracking-widest text-[#E8C97A] font-bold mb-1">Location</span>
-                   <span className="text-[14px] font-semibold">Nairobi, Kenya</span>
+                   <span className="text-[14px] font-semibold">{location}</span>
                  </div>
                  <div className="flex flex-col items-center lg:items-start text-[#F5F0E8]">
                    <span className="text-[10px] uppercase tracking-widest text-[#E8C97A] font-bold mb-1">Date</span>
-                   <span className="text-[14px] font-semibold">August 25, 2026</span>
+                   <span className="text-[14px] font-semibold">{date}</span>
                  </div>
               </motion.div>
 
@@ -94,8 +135,9 @@ export default function FeaturedEvent() {
                 className="mt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full"
               >
                 <Link
-                  href="#events"
+                  href={ticketLink}
                   className="w-full sm:w-auto bg-[#E8C97A] hover:bg-[#F0D898] text-[#071E4A] px-8 py-4 rounded-full font-bold text-[14px] leading-none tracking-[0.02em] transition-colors duration-200 inline-block text-center border border-[#E8C97A]/25"
+                  target={ticketLink.startsWith("http") ? "_blank" : undefined}
                 >
                   Get Tickets & Packages
                 </Link>
@@ -127,8 +169,8 @@ export default function FeaturedEvent() {
                 className="relative w-full h-[55vh] sm:h-[60vh] lg:h-full max-w-[380px] sm:max-w-[460px] lg:max-w-none mx-auto z-10 pb-0 mb-0"
               >
                 <Image
-                  src="/images/image1.png"
-                  alt="Miss Somali 2026 Grand Finale"
+                  src={coverImage}
+                  alt={title}
                   fill
                   priority
                   sizes="(max-w-768px) 100vw, 50vw"

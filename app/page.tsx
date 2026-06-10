@@ -84,10 +84,25 @@ const values = [
 export default function Home() {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [isMounted, setIsMounted] = useState(false);
+  const [targetDateStr, setTargetDateStr] = useState<string>("2026-08-25T20:00:00+03:00");
+
+  useEffect(() => {
+    fetch("/api/events")
+      .then((res) => {
+        if (res.ok) return res.json();
+        return null;
+      })
+      .then((data) => {
+        if (data && data.countdownDate) {
+          setTargetDateStr(data.countdownDate);
+        }
+      })
+      .catch((err) => console.error("Error fetching countdown date:", err));
+  }, []);
 
   useEffect(() => {
     setTimeout(() => setIsMounted(true), 0);
-    const targetDate = new Date("2026-08-25T20:00:00+03:00").getTime();
+    const targetDate = new Date(targetDateStr).getTime();
 
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -109,7 +124,7 @@ export default function Home() {
     const interval = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [targetDateStr]);
 
   return (
     <>
