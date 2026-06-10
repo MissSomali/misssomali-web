@@ -31,7 +31,7 @@ function getAuthMessage(error: unknown, fallback: string) {
 }
 
 function getCallbackUrl() {
-  return `${window.location.origin}/auth/callback`;
+  return `${window.location.origin}/login`;
 }
 
 export default function LoginPage() {
@@ -55,6 +55,7 @@ function LoginContent() {
   const [errorMessage, setErrorMessage] = useState(
     searchParams.get("error") ? "Please sign in to continue." : "",
   );
+  const [checkingSession, setCheckingSession] = useState(true);
 
   useEffect(() => {
     let mounted = true;
@@ -62,8 +63,27 @@ function LoginContent() {
     async function redirectIfSignedIn() {
       const session = await authClient.getSession();
 
-      if (mounted && session.data?.session) {
-        router.replace("/portal");
+      if (mounted) {
+        if (session.data?.session) {
+          const roleResponse = await fetch("/api/auth/role", {
+            cache: "no-store",
+          });
+
+          if (!mounted) return;
+
+          if (roleResponse.ok) {
+            const data = await roleResponse.json();
+            if (data.role === "admin") {
+              router.replace("/admin");
+            } else {
+              router.replace("/portal");
+            }
+          } else {
+            router.replace("/portal");
+          }
+        } else {
+          setCheckingSession(false);
+        }
       }
     }
 
@@ -171,6 +191,19 @@ function LoginContent() {
     } finally {
       setResetLoading(false);
     }
+  }
+
+  if (checkingSession) {
+    return (
+      <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-[#0B2D6B] via-[#0D3A8A] to-[#071E4A] px-4 py-10 text-dark">
+        {/* Background Spotlights & Grid */}
+        <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#071E4A_95%)] z-10" />
+          <div className="absolute inset-0 bg-grid-pattern opacity-35 z-15" />
+        </div>
+        <Loader2 className="relative z-10 size-10 animate-spin text-[#E8C97A]" />
+      </main>
+    );
   }
 
   return (
