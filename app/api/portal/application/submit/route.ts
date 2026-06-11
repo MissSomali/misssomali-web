@@ -44,6 +44,8 @@ export async function POST(request: NextRequest) {
       !app.occupation || 
       !app.height || 
       !app.motivationWhy || 
+      !app.instagram || 
+      !app.tiktok || 
       !hasPhotos
     ) {
       return NextResponse.json(

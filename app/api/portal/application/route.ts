@@ -67,6 +67,10 @@ export async function GET() {
       motivationWhy: app.motivationWhy || "",
       personalStory: app.personalStory || "",
       goals: app.goals || "",
+      instagram: app.instagram || "",
+      tiktok: app.tiktok || "",
+      facebook: app.facebook || "",
+      youtube: app.youtube || "",
       formData: {
         personalInfo: {
           fullName: app.fullName || "",
@@ -186,6 +190,10 @@ export async function PUT(request: NextRequest) {
         personalStory: body.personalStory ?? null,
         goals: body.goals ?? null,
         bio: body.bio ?? null,
+        instagram: body.instagram ?? null,
+        tiktok: body.tiktok ?? null,
+        facebook: body.facebook ?? null,
+        youtube: body.youtube ?? null,
       }
     });
 

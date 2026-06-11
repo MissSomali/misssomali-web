@@ -110,6 +110,10 @@ model ContestantApplication {
   personalStory     String?     @db.Text
   goals             String?     @db.Text
   bio               String?     @db.Text
+  instagram         String?
+  tiktok            String?
+  facebook          String?
+  youtube           String?
   status            Status      @default(draft)
   isSubmitted       Boolean     @default(false)
   appliedAt         DateTime    @default(now())

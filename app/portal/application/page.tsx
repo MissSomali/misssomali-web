@@ -13,6 +13,7 @@ import "react-day-picker/style.css";
 import { format } from "date-fns";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { IconBrandInstagram, IconBrandTiktok, IconBrandFacebook, IconBrandYoutube } from "@tabler/icons-react";
 
 // Step-by-step validation schemas
 const step0Schema = z.object({
@@ -50,8 +51,87 @@ const step2Schema = z.object({
   bio: z.string().optional(),
 });
 
+const step3Schema = z.object({
+  instagram: z.string()
+    .min(1, "Instagram profile or username is required")
+    .refine((val) => {
+      const trimmed = val.trim();
+      if (!trimmed) return false;
+      if (trimmed.startsWith("http://") || trimmed.startsWith("https://") || trimmed.includes("instagram.com/")) {
+        try {
+          const url = new URL(trimmed.startsWith("http") ? trimmed : `https://${trimmed}`);
+          return url.hostname.includes("instagram.com");
+        } catch {
+          return false;
+        }
+      }
+      const usernameRegex = /^@?[a-zA-Z0-9._-]{1,30}$/;
+      return usernameRegex.test(trimmed);
+    }, {
+      message: "Please enter a valid Instagram username or profile link"
+    }),
+  tiktok: z.string()
+    .min(1, "TikTok profile or username is required")
+    .refine((val) => {
+      const trimmed = val.trim();
+      if (!trimmed) return false;
+      if (trimmed.startsWith("http://") || trimmed.startsWith("https://") || trimmed.includes("tiktok.com/")) {
+        try {
+          const url = new URL(trimmed.startsWith("http") ? trimmed : `https://${trimmed}`);
+          return url.hostname.includes("tiktok.com");
+        } catch {
+          return false;
+        }
+      }
+      const usernameRegex = /^@?[a-zA-Z0-9._-]{1,30}$/;
+      return usernameRegex.test(trimmed);
+    }, {
+      message: "Please enter a valid TikTok username or profile link"
+    }),
+  facebook: z.string()
+    .optional()
+    .or(z.literal(''))
+    .refine((val) => {
+      if (!val) return true;
+      const trimmed = val.trim();
+      if (!trimmed) return true;
+      if (trimmed.startsWith("http://") || trimmed.startsWith("https://") || trimmed.includes("facebook.com/")) {
+        try {
+          const url = new URL(trimmed.startsWith("http") ? trimmed : `https://${trimmed}`);
+          return url.hostname.includes("facebook.com");
+        } catch {
+          return false;
+        }
+      }
+      const usernameRegex = /^@?[a-zA-Z0-9._-]{1,30}$/;
+      return usernameRegex.test(trimmed);
+    }, {
+      message: "Please enter a valid Facebook username or profile link"
+    }),
+  youtube: z.string()
+    .optional()
+    .or(z.literal(''))
+    .refine((val) => {
+      if (!val) return true;
+      const trimmed = val.trim();
+      if (!trimmed) return true;
+      if (trimmed.startsWith("http://") || trimmed.startsWith("https://") || trimmed.includes("youtube.com/")) {
+        try {
+          const url = new URL(trimmed.startsWith("http") ? trimmed : `https://${trimmed}`);
+          return url.hostname.includes("youtube.com");
+        } catch {
+          return false;
+        }
+      }
+      const usernameRegex = /^@?[a-zA-Z0-9._-]{1,30}$/;
+      return usernameRegex.test(trimmed);
+    }, {
+      message: "Please enter a valid YouTube username or channel link"
+    }),
+});
+
 // Full Application validation schema
-const applicationSchema = step0Schema.merge(step1Schema).merge(step2Schema);
+const applicationSchema = step0Schema.merge(step1Schema).merge(step2Schema).merge(step3Schema);
 
 type ApplicationFormValues = z.infer<typeof applicationSchema>;
 
@@ -85,6 +165,10 @@ export default function ApplicationPage() {
       personalStory: "",
       goals: "",
       bio: "",
+      instagram: "",
+      tiktok: "",
+      facebook: "",
+      youtube: "",
     },
   });
 
@@ -110,6 +194,9 @@ export default function ApplicationPage() {
       return step2Schema.safeParse(formValues).success;
     }
     if (stepIdx === 3) {
+      return step3Schema.safeParse(formValues).success;
+    }
+    if (stepIdx === 4) {
       return photos.some(p => p.type === "profile") && photos.some(p => p.type === "full_body");
     }
     return true;
@@ -171,6 +258,10 @@ export default function ApplicationPage() {
             setValue("personalStory", data.personalStory || "");
             setValue("goals", data.goals || "");
             setValue("bio", data.bio || "");
+            setValue("instagram", data.instagram || "");
+            setValue("tiktok", data.tiktok || "");
+            setValue("facebook", data.facebook || "");
+            setValue("youtube", data.youtube || "");
           }
         }
       } catch (err) {
@@ -331,6 +422,7 @@ export default function ApplicationPage() {
       ["fullName", "phone", "city", "country", "dateOfBirth"],
       ["educationLevel", "occupation", "height", "languages", "skills"],
       ["motivationWhy", "personalStory", "goals", "bio"],
+      ["instagram", "tiktok", "facebook", "youtube"],
     ];
 
     const fields = stepFields[activeStep];
@@ -351,7 +443,7 @@ export default function ApplicationPage() {
       } finally {
         setAutoSaving(false);
       }
-    } else if (activeStep === 3) {
+    } else if (activeStep === 4) {
       // Photo step
       const hasProfilePhoto = photos.some(p => p.type === "profile");
       const hasFullBodyPhoto = photos.some(p => p.type === "full_body");
@@ -374,7 +466,7 @@ export default function ApplicationPage() {
       return;
     }
 
-    if (!canNavigateToStep(4)) {
+    if (!canNavigateToStep(5)) {
       alert("Please correct validation errors on previous steps before submitting.");
       return;
     }
@@ -426,6 +518,7 @@ export default function ApplicationPage() {
     "Personal Info",
     "Background & Education",
     "Motivation Statement",
+    "Social Media",
     "Photo Uploads",
     "Review & Submit",
   ];
@@ -862,8 +955,103 @@ export default function ApplicationPage() {
             </div>
           )}
 
-          {/* Step 4: Photo Uploads */}
+          {/* Step 4: Social Media */}
           {activeStep === 3 && (
+            <div className="rounded-[10px] border border-stroke bg-white p-7 shadow-1 dark:border-dark-3 dark:bg-gray-dark space-y-5">
+              <h2 className="text-base font-bold text-dark dark:text-white">Social Media</h2>
+              <p className="text-xs text-dark-5">
+                Provide your social media handles or profile links below. Instagram and TikTok are required.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <FormField
+                  control={form.control}
+                  name="instagram"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="mb-2 flex items-center gap-1.5 text-body-sm font-medium text-dark dark:text-white">
+                        <IconBrandInstagram className="h-4 w-4 text-pink-600 dark:text-pink-400" />
+                        Instagram Profile / Username <span className="text-red">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="@username or https://instagram.com/username"
+                          className="h-12 w-full rounded-lg border border-stroke bg-gray-2 px-4 text-sm outline-none focus:border-primary dark:border-dark-3 dark:bg-dark-2 text-dark dark:text-white"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red text-xs mt-1" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="tiktok"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="mb-2 flex items-center gap-1.5 text-body-sm font-medium text-dark dark:text-white">
+                        <IconBrandTiktok className="h-4 w-4 text-dark dark:text-white" />
+                        TikTok Profile / Username <span className="text-red">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="@username or https://tiktok.com/@username"
+                          className="h-12 w-full rounded-lg border border-stroke bg-gray-2 px-4 text-sm outline-none focus:border-primary dark:border-dark-3 dark:bg-dark-2 text-dark dark:text-white"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red text-xs mt-1" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="facebook"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="mb-2 flex items-center gap-1.5 text-body-sm font-medium text-dark dark:text-white">
+                        <IconBrandFacebook className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                        Facebook Profile (Optional)
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="https://facebook.com/username"
+                          className="h-12 w-full rounded-lg border border-stroke bg-gray-2 px-4 text-sm outline-none focus:border-primary dark:border-dark-3 dark:bg-dark-2 text-dark dark:text-white"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red text-xs mt-1" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="youtube"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="mb-2 flex items-center gap-1.5 text-body-sm font-medium text-dark dark:text-white">
+                        <IconBrandYoutube className="h-4 w-4 text-red-600 dark:text-red-400" />
+                        YouTube Channel (Optional)
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="https://youtube.com/@channel"
+                          className="h-12 w-full rounded-lg border border-stroke bg-gray-2 px-4 text-sm outline-none focus:border-primary dark:border-dark-3 dark:bg-dark-2 text-dark dark:text-white"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red text-xs mt-1" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Step 5: Photo Uploads */}
+          {activeStep === 4 && (
             <div className="rounded-[10px] border border-stroke bg-white p-7 shadow-1 dark:border-dark-3 dark:bg-gray-dark space-y-6">
               <h2 className="text-base font-bold text-dark dark:text-white">Required Media Assets</h2>
               <p className="text-xs text-dark-5">
@@ -966,8 +1154,8 @@ export default function ApplicationPage() {
             </div>
           )}
 
-          {/* Step 5: Review & Submit */}
-          {activeStep === 4 && (
+          {/* Step 6: Review & Submit */}
+          {activeStep === 5 && (
             <div className="rounded-[10px] border border-stroke bg-white p-7 shadow-1 dark:border-dark-3 dark:bg-gray-dark space-y-6">
               <h2 className="text-base font-bold text-dark dark:text-white">Platform Information Review</h2>
               <div className="rounded-xl bg-gray-2 p-6 dark:bg-dark-2 space-y-5 text-sm">
@@ -1012,6 +1200,28 @@ export default function ApplicationPage() {
                   <div>
                     <span className="text-xs font-bold uppercase tracking-wider text-dark-5 block mb-1">Special Skills / Talent</span>
                     <p className="font-semibold text-dark dark:text-white">{formValues.skills || "—"}</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-stroke pb-3 dark:border-dark-3">
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-dark-5 block mb-1">Instagram</span>
+                    <p className="font-semibold text-dark dark:text-white">{formValues.instagram || "—"}</p>
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-dark-5 block mb-1">TikTok</span>
+                    <p className="font-semibold text-dark dark:text-white">{formValues.tiktok || "—"}</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-stroke pb-3 dark:border-dark-3">
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-dark-5 block mb-1">Facebook (Optional)</span>
+                    <p className="font-semibold text-dark dark:text-white">{formValues.facebook || "—"}</p>
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-dark-5 block mb-1">YouTube (Optional)</span>
+                    <p className="font-semibold text-dark dark:text-white">{formValues.youtube || "—"}</p>
                   </div>
                 </div>
 
@@ -1078,7 +1288,7 @@ export default function ApplicationPage() {
             !isSubmitted && (
               <button
                 type="submit"
-                disabled={submitting || !isValid || !isStepValid(3)}
+                disabled={submitting || !isValid || !isStepValid(4)}
                 className="flex items-center gap-2 rounded-lg bg-primary hover:bg-opacity-90 text-white px-8 py-3 font-bold transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? (

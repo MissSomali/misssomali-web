@@ -21,6 +21,12 @@ import {
   Globe,
   Phone,
 } from "lucide-react";
+import {
+  IconBrandInstagram,
+  IconBrandTiktok,
+  IconBrandFacebook,
+  IconBrandYoutube,
+} from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -63,6 +69,10 @@ interface Application {
   personalStory: string | null;
   goals: string | null;
   bio: string | null;
+  instagram: string | null;
+  tiktok: string | null;
+  facebook: string | null;
+  youtube: string | null;
   status: string;
   appliedAt: string;
   updatedAt: string;
@@ -323,6 +333,90 @@ export default function ApplicationDetailPage({ params }: PageProps) {
                   <p className="text-sm font-medium text-dark dark:text-white">
                     {application.country || application.user?.country || "—"}
                   </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Social Media Profiles */}
+          <div className="rounded-[10px] bg-white p-6 shadow-1 dark:bg-gray-dark">
+            <h3 className="mb-4 text-lg font-semibold text-dark dark:text-white">
+              Social Media Profiles
+            </h3>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="flex items-start gap-3">
+                <IconBrandInstagram className="mt-0.5 h-5 w-5 text-pink-600 dark:text-pink-400" />
+                <div>
+                  <p className="text-xs text-dark-6">Instagram</p>
+                  {application.instagram ? (
+                    <a
+                      href={application.instagram.startsWith("http") ? application.instagram : `https://instagram.com/${application.instagram.replace(/^@/, "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-semibold text-primary hover:underline"
+                    >
+                      {application.instagram}
+                    </a>
+                  ) : (
+                    <p className="text-sm font-medium text-destructive">Missing</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <IconBrandTiktok className="mt-0.5 h-5 w-5 text-dark dark:text-white" />
+                <div>
+                  <p className="text-xs text-dark-6">TikTok</p>
+                  {application.tiktok ? (
+                    <a
+                      href={application.tiktok.startsWith("http") ? application.tiktok : `https://tiktok.com/@${application.tiktok.replace(/^@/, "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-semibold text-primary hover:underline"
+                    >
+                      {application.tiktok}
+                    </a>
+                  ) : (
+                    <p className="text-sm font-medium text-destructive">Missing</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <IconBrandFacebook className="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <div>
+                  <p className="text-xs text-dark-6">Facebook</p>
+                  {application.facebook ? (
+                    <a
+                      href={application.facebook.startsWith("http") ? application.facebook : `https://facebook.com/${application.facebook.replace(/^@/, "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-semibold text-primary hover:underline"
+                    >
+                      {application.facebook}
+                    </a>
+                  ) : (
+                    <p className="text-sm font-medium text-dark-6">—</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <IconBrandYoutube className="mt-0.5 h-5 w-5 text-red-600 dark:text-red-400" />
+                <div>
+                  <p className="text-xs text-dark-6">YouTube</p>
+                  {application.youtube ? (
+                    <a
+                      href={application.youtube.startsWith("http") ? application.youtube : `https://youtube.com/${application.youtube.startsWith("@") ? application.youtube : `user/${application.youtube}`}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-semibold text-primary hover:underline"
+                    >
+                      {application.youtube}
+                    </a>
+                  ) : (
+                    <p className="text-sm font-medium text-dark-6">—</p>
+                  )}
                 </div>
               </div>
             </div>
