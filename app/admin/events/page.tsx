@@ -51,6 +51,8 @@ export default function GrandFinaleSettingsPage() {
   const [saving, setSaving] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [successMsg, setSuccessMsg] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [contestantSearch, setContestantSearch] = useState("");
 
   const [form, setForm] = useState({
     title: "",
@@ -201,6 +203,40 @@ export default function GrandFinaleSettingsPage() {
     });
   };
 
+  // Cancel edits and restore original settings
+  const handleCancel = () => {
+    if (grandFinale) {
+      setForm({
+        title: grandFinale.title || "",
+        subtitle: grandFinale.subtitle || "",
+        description: grandFinale.description || "",
+        location: grandFinale.location || "",
+        coverImage: grandFinale.coverImage || "",
+        eventDate: grandFinale.eventDate ? new Date(grandFinale.eventDate).toISOString().slice(0, 16) : "",
+        countdownDate: grandFinale.countdownDate ? new Date(grandFinale.countdownDate).toISOString().slice(0, 16) : "",
+        ticketLink: grandFinale.ticketLink || "",
+        isPublished: grandFinale.isPublished || false,
+        isFeatured: grandFinale.isFeatured || false,
+        featuredContestants: grandFinale.featuredContestants || [],
+      });
+    } else {
+      setForm({
+        title: "",
+        subtitle: "",
+        description: "",
+        location: "",
+        coverImage: "",
+        eventDate: "",
+        countdownDate: "",
+        ticketLink: "",
+        isPublished: false,
+        isFeatured: false,
+        featuredContestants: [],
+      });
+    }
+    setIsEditing(false);
+  };
+
   // Submit form data
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -234,6 +270,7 @@ export default function GrandFinaleSettingsPage() {
 
       if (res.ok) {
         setSuccessMsg("Grand Finale settings saved successfully!");
+        setIsEditing(false);
         setTimeout(() => setSuccessMsg(""), 3000);
         await fetchData();
       } else {
@@ -248,6 +285,11 @@ export default function GrandFinaleSettingsPage() {
     }
   };
 
+  const filteredContestants = contestants.filter((con) => {
+    const name = con.fullName || con.user?.fullName || "";
+    return name.toLowerCase().includes(contestantSearch.toLowerCase());
+  });
+
   if (loading) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
@@ -257,46 +299,90 @@ export default function GrandFinaleSettingsPage() {
   }
 
   return (
-    <>
-      <div className="mb-6">
-        <h1 className="text-heading-5 font-bold text-dark dark:text-white flex items-center gap-2">
-          <Trophy className="h-6 w-6 text-[#E8C97A]" /> Grand Finale Settings
-        </h1>
-        <p className="mt-1 text-sm text-dark-6">
-          Manage the official Grand Finale details, countdown date, event information, and visibility settings.
-        </p>
+    <form onSubmit={handleSave} className="space-y-6">
+      {/* Header Panel */}
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-heading-5 font-bold text-dark dark:text-white flex items-center gap-2">
+            <Trophy className="h-6 w-6 text-[#E8C97A]" /> Grand Finale Settings
+          </h1>
+          <p className="mt-1 text-sm text-dark-6">
+            Manage the official Grand Finale event details, countdown schedule, featured contestants, and public visibility settings.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          {!isEditing ? (
+            <Button
+              type="button"
+              onClick={() => setIsEditing(true)}
+              className="bg-primary hover:bg-opacity-90 text-white font-bold"
+            >
+              Edit Settings
+            </Button>
+          ) : (
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleCancel}
+                disabled={saving || uploadProgress !== null}
+                className="font-bold border-stroke dark:border-dark-3"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={saving || uploadProgress !== null}
+                className="bg-primary hover:bg-opacity-90 text-white font-bold flex items-center gap-1.5"
+              >
+                {saving ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Save className="h-4 w-4" />
+                )}
+                Save Changes
+              </Button>
+            </>
+          )}
+        </div>
       </div>
 
-      <form onSubmit={handleSave} className="rounded-[10px] bg-white p-6 shadow-1 dark:bg-gray-dark space-y-6">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          
-          {/* Left Columns: Core parameters (Professional grid) */}
-          <div className="lg:col-span-2 space-y-4">
+      {/* Configuration Grid */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {/* Left main forms columns */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Card 1: Event Details */}
+          <div className="rounded-[10px] bg-white p-6 shadow-1 dark:bg-gray-dark space-y-4">
+            <h3 className="text-base font-bold text-dark dark:text-white border-b border-stroke pb-3 dark:border-dark-3">
+              Event Details
+            </h3>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <Label htmlFor="title">Finale Title</Label>
+                <Label htmlFor="title" className="mb-2 block text-sm font-medium text-dark dark:text-white">Event Title</Label>
                 <Input
                   id="title"
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
                   placeholder="e.g. Grand Finale — Miss Somali 2026"
                   required
+                  disabled={!isEditing}
                 />
               </div>
 
               <div>
-                <Label htmlFor="subtitle">Slogan / Subtitle</Label>
+                <Label htmlFor="subtitle" className="mb-2 block text-sm font-medium text-dark dark:text-white">Event Subtitle</Label>
                 <Input
                   id="subtitle"
                   value={form.subtitle}
                   onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
                   placeholder="e.g. The Coronation Night"
+                  disabled={!isEditing}
                 />
               </div>
             </div>
 
             <div>
-              <Label htmlFor="description">Event Description</Label>
+              <Label htmlFor="description" className="mb-2 block text-sm font-medium text-dark dark:text-white">Event Description</Label>
               <Textarea
                 id="description"
                 value={form.description}
@@ -304,13 +390,20 @@ export default function GrandFinaleSettingsPage() {
                 placeholder="Write description and details of the coronation ceremony..."
                 rows={5}
                 required
+                disabled={!isEditing}
               />
             </div>
+          </div>
 
+          {/* Card 2: Logistics & Schedule */}
+          <div className="rounded-[10px] bg-white p-6 shadow-1 dark:bg-gray-dark space-y-4">
+            <h3 className="text-base font-bold text-dark dark:text-white border-b border-stroke pb-3 dark:border-dark-3">
+              Logistics & Schedule
+            </h3>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <Label htmlFor="location" className="flex items-center gap-1">
-                  <MapPin className="h-4 w-4 text-primary" /> Venue / Location
+                <Label htmlFor="location" className="mb-2 flex items-center gap-1 text-sm font-medium text-dark dark:text-white">
+                  <MapPin className="h-4 w-4 text-primary" /> Venue Location
                 </Label>
                 <Input
                   id="location"
@@ -318,26 +411,28 @@ export default function GrandFinaleSettingsPage() {
                   onChange={(e) => setForm({ ...form, location: e.target.value })}
                   placeholder="e.g. National Hall, Mogadishu"
                   required
+                  disabled={!isEditing}
                 />
               </div>
 
               <div>
-                <Label htmlFor="ticketLink" className="flex items-center gap-1">
-                  <LinkIcon className="h-4 w-4 text-primary" /> Ticket / External CTA URL
+                <Label htmlFor="ticketLink" className="mb-2 flex items-center gap-1 text-sm font-medium text-dark dark:text-white">
+                  <LinkIcon className="h-4 w-4 text-primary" /> Ticket Link
                 </Label>
                 <Input
                   id="ticketLink"
                   value={form.ticketLink}
                   onChange={(e) => setForm({ ...form, ticketLink: e.target.value })}
                   placeholder="e.g. https://tickets.misssomali.com"
+                  disabled={!isEditing}
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <Label htmlFor="eventDate" className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4 text-primary" /> Coronation Date & Time
+                <Label htmlFor="eventDate" className="mb-2 flex items-center gap-1 text-sm font-medium text-dark dark:text-white">
+                  <Calendar className="h-4 w-4 text-primary" /> Grand Finale Date & Time
                 </Label>
                 <Input
                   type="datetime-local"
@@ -345,48 +440,60 @@ export default function GrandFinaleSettingsPage() {
                   value={form.eventDate}
                   onChange={(e) => setForm({ ...form, eventDate: e.target.value })}
                   required
+                  disabled={!isEditing}
                 />
               </div>
             </div>
 
-            {/* Visibility checkboxes */}
-            <div className="pt-2 border-t border-stroke dark:border-dark-3 flex flex-wrap gap-6">
-              <div className="flex items-center space-x-2">
+            {/* Visibility checkbox */}
+            <div className="pt-2 border-t border-stroke dark:border-dark-3">
+              <div className="flex items-start space-x-2.5">
                 <Checkbox
                   id="isPublished"
                   checked={form.isPublished}
                   onCheckedChange={(checked) => setForm({ ...form, isPublished: !!checked })}
+                  disabled={!isEditing}
+                  className="mt-1"
                 />
-                <Label htmlFor="isPublished" className="cursor-pointer font-bold text-dark dark:text-white">
-                  Publish to Landing Page (Public Event)
-                </Label>
+                <div className="grid gap-1.5 leading-none">
+                  <Label htmlFor="isPublished" className="cursor-pointer font-bold text-sm text-dark dark:text-white">
+                    Publish to Landing Page (Public Event)
+                  </Label>
+                  <p className="text-xs text-dark-6">
+                    Make this event public and start the landing page countdown clock.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Right Column: Hero Cover Uploader & Finalists */}
-          <div className="space-y-4">
-            {/* Banner/Hero Cover Uploader */}
-            <div>
-              <Label>Hero Cover Banner Image</Label>
-              <div className="mt-1.5 rounded-lg border-2 border-dashed border-stroke p-4 dark:border-dark-3 flex flex-col items-center justify-center bg-gray-50 dark:bg-dark-2">
-                {form.coverImage ? (
-                  <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-stroke dark:border-dark-3 mb-3">
-                    <Image
-                      src={form.coverImage}
-                      alt="Banner Preview"
-                      fill
-                      sizes="300px"
-                      className="object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex h-20 w-full items-center justify-center rounded-lg bg-stroke/30 text-dark-6 dark:bg-dark-3 mb-3">
-                    <ImageIcon className="h-8 w-8 text-dark-5" />
-                  </div>
-                )}
+        {/* Right side panels column */}
+        <div className="space-y-6">
+          {/* Card 3: Banner Image Uploader */}
+          <div className="rounded-[10px] bg-white p-6 shadow-1 dark:bg-gray-dark space-y-4">
+            <h3 className="text-base font-bold text-dark dark:text-white border-b border-stroke pb-3 dark:border-dark-3">
+              Banner Image
+            </h3>
+            <div className="rounded-xl border border-stroke bg-gray-50 p-4 dark:border-dark-3 dark:bg-dark-2 flex flex-col items-center justify-center text-center">
+              {form.coverImage ? (
+                <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-stroke dark:border-dark-3 mb-3">
+                  <Image
+                    src={form.coverImage}
+                    alt="Banner Preview"
+                    fill
+                    sizes="300px"
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-6 text-dark-5">
+                  <ImageIcon className="h-10 w-10 mb-2 opacity-40" />
+                  <p className="text-xs font-semibold">No image uploaded</p>
+                </div>
+              )}
 
-                {/* Upload Action */}
+              {isEditing ? (
                 <div className="w-full">
                   <div className="relative flex justify-center items-center">
                     <input
@@ -409,67 +516,104 @@ export default function GrandFinaleSettingsPage() {
                   </div>
 
                   {uploadProgress !== null && (
-                    <div className="mt-3 space-y-1.5">
+                    <div className="mt-3 space-y-1.5 w-full">
                       <Progress value={uploadProgress} className="h-1.5" />
                       <p className="text-center text-[10px] text-dark-6">Uploading ({uploadProgress}%)</p>
                     </div>
                   )}
                 </div>
-              </div>
-              <p className="mt-1 text-[10px] text-dark-6">
-                Recommended aspect ratio: 16:9. Supported files: PNG, JPG, WebP. Max size: 2MB.
-              </p>
+              ) : (
+                !form.coverImage && (
+                  <p className="text-xs text-dark-6 italic">Enable editing to upload a banner image.</p>
+                )
+              )}
+            </div>
+            <p className="text-[10px] text-dark-6 leading-normal text-left">
+              Recommended size: 16:9 ratio. Supported formats: PNG, JPG, WebP. Maximum size: 2MB.
+            </p>
+          </div>
+
+          {/* Card 4: Featured Contestants selection list */}
+          <div className="rounded-[10px] bg-white p-6 shadow-1 dark:bg-gray-dark space-y-4">
+            <h3 className="text-base font-bold text-dark dark:text-white border-b border-stroke pb-3 dark:border-dark-3">
+              Featured Contestants
+            </h3>
+            
+            {/* Search filter input */}
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search contestants..."
+                value={contestantSearch}
+                onChange={(e) => setContestantSearch(e.target.value)}
+                disabled={!isEditing}
+                className="h-10 w-full rounded-lg border border-stroke bg-gray-2 px-3 text-sm outline-none focus:border-primary dark:border-dark-3 dark:bg-dark-2 text-dark dark:text-white disabled:opacity-50"
+              />
             </div>
 
-            {/* Featured Contestants List */}
-            <div>
-              <Label className="mb-2 block">Featured Contestants (Select Finalists)</Label>
-              <div className="rounded-lg border border-stroke p-3 dark:border-dark-3 max-h-[200px] overflow-y-auto space-y-2.5 bg-gray-50 dark:bg-dark-2">
-                {contestants.length === 0 ? (
-                  <p className="text-xs text-dark-6">No approved/shortlisted contestants found.</p>
-                ) : (
-                  contestants.map((con) => {
-                    const name = con.fullName || con.user?.fullName || "Unnamed Contestant";
-                    const isChecked = (form.featuredContestants || []).includes(con.id);
-                    return (
-                      <div key={con.id} className="flex items-center space-x-2.5">
-                        <Checkbox
-                          id={`con-${con.id}`}
-                          checked={isChecked}
-                          onCheckedChange={() => handleToggleContestant(con.id)}
-                        />
-                        <Label htmlFor={`con-${con.id}`} className="cursor-pointer text-xs">
-                          {name}
-                        </Label>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-              <p className="mt-1 text-[10px] text-dark-6">
-                Highlighted candidates on the Grand Finale landing page layout.
-              </p>
+            <div className="rounded-lg border border-stroke p-3 dark:border-dark-3 max-h-[200px] overflow-y-auto space-y-2.5 bg-gray-50 dark:bg-dark-2">
+              {filteredContestants.length === 0 ? (
+                <p className="text-xs text-dark-6 text-center py-2">
+                  {contestants.length === 0 ? "No approved/shortlisted contestants found." : "No matching contestants."}
+                </p>
+              ) : (
+                filteredContestants.map((con) => {
+                  const name = con.fullName || con.user?.fullName || "Unnamed Contestant";
+                  const isChecked = (form.featuredContestants || []).includes(con.id);
+                  return (
+                    <div key={con.id} className="flex items-center space-x-2.5">
+                      <Checkbox
+                        id={`con-${con.id}`}
+                        checked={isChecked}
+                        onCheckedChange={() => handleToggleContestant(con.id)}
+                        disabled={!isEditing}
+                      />
+                      <Label htmlFor={`con-${con.id}`} className={`cursor-pointer text-xs ${!isEditing ? "cursor-not-allowed opacity-80" : ""}`}>
+                        {name}
+                      </Label>
+                    </div>
+                  );
+                })
+              )}
             </div>
+            <p className="text-[10px] text-dark-6 leading-normal text-left">
+              Select contestants to highlight on the Grand Finale page.
+            </p>
           </div>
         </div>
+      </div>
 
-        {/* Form Actions footer */}
+      {/* Action Footer */}
+      {isEditing && (
         <div className="border-t border-stroke pt-4 dark:border-dark-3 flex items-center justify-end gap-4">
           {successMsg && (
             <span className="flex items-center gap-1.5 text-sm font-medium text-emerald-600">
               <CheckCircle2 className="h-4 w-4" /> {successMsg}
             </span>
           )}
-          <Button type="submit" disabled={saving || uploadProgress !== null} className="flex items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleCancel}
+            disabled={saving || uploadProgress !== null}
+            className="font-bold border-stroke dark:border-dark-3"
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            disabled={saving || uploadProgress !== null}
+            className="bg-primary hover:bg-opacity-90 text-white font-bold flex items-center gap-1.5"
+          >
             {saving ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <Save className="h-4 w-4" />
             )}
-            Save Finale Settings
+            Save Changes
           </Button>
         </div>
-      </form>
-    </>
+      )}
+    </form>
   );
 }
