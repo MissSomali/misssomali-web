@@ -120,7 +120,7 @@ export default function Hero() {
               <div className="relative w-full h-[55vh] sm:h-[60vh] lg:h-full max-w-[380px] sm:max-w-[460px] lg:max-w-none mx-auto z-10 pb-0 mb-0">
                 {/* Crown Background Image */}
                 <motion.div 
-                  className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] sm:w-[130%] sm:h-[130%] lg:w-[145%] lg:h-[145%] z-0 pointer-events-none opacity-25"
+                  className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[88%] h-[88%] sm:w-[104%] sm:h-[104%] lg:w-[116%] lg:h-[116%] z-0 pointer-events-none opacity-25"
                   initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
                   animate={{ opacity: 0.25, scale: 1, rotate: 0 }}
                   transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
