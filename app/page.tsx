@@ -431,13 +431,6 @@ export default function Home() {
               <div className="grid-12 items-center gap-y-6 md:gap-y-0">
                 {/* Left Column: Texts */}
                 <div className="col-span-12 md:col-span-8 lg:col-span-9 flex flex-col text-left items-start relative z-10">
-                  {/* Glow/Dark Badge */}
-                  <div className="mb-4 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#E8C97A]/10 border border-[#E8C97A]/25">
-                    <i className="fas fa-crown text-[#E8C97A] text-[10px] animate-pulse"></i>
-                    <span className="text-[10px] font-medium uppercase tracking-[0.1em] text-[#E8C97A]">
-                      Applications Open
-                    </span>
-                  </div>
 
                   <h2 className="text-[28px] sm:text-[34px] md:text-[38px] font-semibold text-white tracking-tight leading-[1.2] mb-3">
                     Applications for Miss Somali 2026 are open now.
