@@ -137,12 +137,12 @@ export default function HowItWorks() {
                     {step.hasApplyLink && (
                       <Link 
                         href="/portal" 
-                        className="inline-flex items-center gap-2 mt-6 text-[#0B2D6B] font-semibold text-sm group/link overflow-hidden relative pb-1"
+                        className="inline-flex items-center gap-2 mt-6 text-[#2563EB] font-semibold text-sm group/link overflow-hidden relative pb-1"
                       >
                         <span className="relative z-10">Apply Now</span>
                         <ArrowRight className="w-4 h-4 relative z-10 transition-transform group-hover/link:translate-x-1" />
                         {/* Hover underline animation */}
-                        <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#0B2D6B] transform origin-left scale-x-0 transition-transform duration-300 group-hover/link:scale-x-100" />
+                        <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#2563EB] transform origin-left scale-x-0 transition-transform duration-300 group-hover/link:scale-x-100" />
                       </Link>
                     )}
                   </div>
