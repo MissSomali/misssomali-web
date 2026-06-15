@@ -131,8 +131,10 @@ export default function GrandFinaleEvent() {
       {/* Ambient background elements to match the footer/cta */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#E8C97A]/5 rounded-full blur-3xl pointer-events-none" />
+        
         {/* Massive center glow effect behind the event card */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] sm:w-[800px] sm:h-[800px] md:w-[1000px] md:h-[600px] bg-[#E8C97A]/20 rounded-full blur-[120px] pointer-events-none z-0" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100%] h-[100%] max-w-[1200px] max-h-[800px] bg-[radial-gradient(ellipse_at_center,rgba(232,201,122,0.25)_0%,transparent_60%)] pointer-events-none z-0" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#E8C97A]/40 rounded-full blur-[100px] pointer-events-none z-0" />
         
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#071E4A_95%)] z-10 pointer-events-none" />
         <div className="absolute inset-0 opacity-15 pointer-events-none z-15" style={{
@@ -141,10 +143,10 @@ export default function GrandFinaleEvent() {
         }} />
       </div>
 
-      <div className="grid-container relative z-10">
-        <div className="grid-12">
+      <div className="relative z-10 w-full max-w-[1536px] mx-auto px-4 sm:px-8 lg:px-16">
+        <div className="w-full">
           
-          <div className="col-span-12">
+          <div className="w-full">
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -164,27 +166,27 @@ export default function GrandFinaleEvent() {
               </div>
 
               {/* Left Column: Content */}
-              <div className="relative z-20 w-full lg:w-[55%] flex flex-col justify-between p-8 sm:p-12 md:p-16">
+              <div className="relative z-20 w-full lg:w-[55%] flex flex-col justify-between p-6 sm:p-8 md:p-10 lg:p-12">
                 
                 {/* Header Elements */}
                 <div>
-                  <div className="mb-8 relative z-20">
+                  <div className="mb-6 relative z-20">
                     <PillBadge className="bg-white/40 border border-white/50 text-[#0B2D6B] backdrop-blur-md">
                       Upcoming Event
                     </PillBadge>
                   </div>
 
-                  <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-[#0B2D6B] tracking-tighter leading-[1.1] mb-6 relative z-20">
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-[#0B2D6B] tracking-tighter leading-[1.1] mb-5 relative z-20">
                     {event.title}
                   </h2>
                   
-                  <p className="text-[#071E4A]/80 font-light leading-relaxed text-base sm:text-lg max-w-xl relative z-20">
+                  <p className="text-[#071E4A]/80 font-light leading-relaxed text-sm sm:text-base md:text-lg max-w-xl relative z-20">
                     {mainDescription}
                   </p>
                 </div>
 
                 {/* Details & CTA */}
-                <div className="mt-16 flex flex-col gap-10">
+                <div className="mt-8 lg:mt-10 flex flex-col gap-8">
                   <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 text-[#0B2D6B] relative z-20">
                     <div className="flex items-center gap-3">
                       <CalendarDays className="w-5 h-5 text-[#0B2D6B]/50" />
@@ -221,10 +223,10 @@ export default function GrandFinaleEvent() {
               </div>
 
               {/* Right Column: Pop-out Image Poster */}
-              <div className="relative z-30 w-full lg:w-[45%] flex items-center justify-center p-8 lg:p-0 lg:pr-12">
+              <div className="relative z-50 w-full lg:w-[45%] flex items-center justify-center p-6 lg:p-0 lg:pr-10">
                 
                 {/* Floating Image Wrapper */}
-                <div className="relative w-full max-w-md lg:max-w-none lg:w-[115%] aspect-[4/5] rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(11,45,107,0.2)] transition-all duration-[800ms] ease-out group-hover:-translate-y-8 group-hover:scale-[1.02] group-hover:shadow-[0_40px_80px_rgba(11,45,107,0.3)] lg:translate-x-8 bg-[#0B2D6B]">
+                <div className="relative w-full max-w-md lg:max-w-none lg:w-[105%] aspect-[16/10] sm:aspect-[4/3] rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(11,45,107,0.2)] transition-all duration-[800ms] ease-out group-hover:-translate-y-6 group-hover:scale-[1.02] group-hover:shadow-[0_40px_80px_rgba(11,45,107,0.3)] lg:translate-x-6 bg-[#0B2D6B]">
                   
                   <Image
                     src={event.coverImage}
