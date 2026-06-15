@@ -131,6 +131,9 @@ export default function GrandFinaleEvent() {
       {/* Ambient background elements to match the footer/cta */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#E8C97A]/5 rounded-full blur-3xl pointer-events-none" />
+        {/* Massive center glow effect behind the event card */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] sm:w-[800px] sm:h-[800px] md:w-[1000px] md:h-[600px] bg-[#E8C97A]/20 rounded-full blur-[120px] pointer-events-none z-0" />
+        
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#071E4A_95%)] z-10 pointer-events-none" />
         <div className="absolute inset-0 opacity-15 pointer-events-none z-15" style={{
           backgroundImage: `linear-gradient(to right, rgba(232, 201, 122, 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(232, 201, 122, 0.08) 1px, transparent 1px)`,
