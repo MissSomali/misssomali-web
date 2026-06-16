@@ -135,10 +135,45 @@ export default function PortalDashboard() {
         </p>
       </div>
 
+      {/* Mobile-Only Action Center (visible below lg) */}
+      <div className="block lg:hidden rounded-[10px] border border-stroke bg-white p-4 sm:p-6 shadow-1 dark:border-dark-3 dark:bg-gray-dark">
+        <h3 className="text-base font-bold text-dark dark:text-white mb-2">
+          Action Center
+        </h3>
+        <p className="text-xs text-dark-5 mb-4">
+          {isSubmitted 
+            ? "Your application is locked and under review. Editing is disabled." 
+            : "Complete all form sections to submit your registration files."}
+        </p>
+
+        {isSubmitted ? (
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link
+              href="/portal/status"
+              className="flex w-full sm:w-1/2 items-center justify-center gap-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary py-3 text-sm font-bold transition-colors"
+            >
+              <Eye className="h-4 w-4" />
+              View Timeline Status
+            </Link>
+            <div className="flex w-full sm:w-1/2 items-center justify-center rounded-lg bg-gray-2 p-3 text-xs text-dark-5 dark:bg-dark-2 font-semibold">
+              🔒 Application Submitted (Locked)
+            </div>
+          </div>
+        ) : (
+          <Link
+            href="/portal/application"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary hover:bg-opacity-90 text-white py-3 text-sm font-bold transition-all shadow-md"
+          >
+            <FileText className="h-4 w-4" />
+            {data === null ? "Start Application" : "Continue Application"}
+          </Link>
+        )}
+      </div>
+
       <div className="grid grid-cols-12 gap-6">
         {/* Main overview status card */}
         <div className="col-span-12 lg:col-span-8 space-y-6">
-          <div className="rounded-[10px] border border-stroke bg-white p-6 shadow-1 dark:border-dark-3 dark:bg-gray-dark">
+          <div className="rounded-[10px] border border-stroke bg-white p-4 sm:p-6 shadow-1 dark:border-dark-3 dark:bg-gray-dark">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stroke pb-5 dark:border-dark-3">
               <div>
                 <span className="text-xs font-semibold uppercase tracking-wider text-dark-5">
@@ -183,24 +218,24 @@ export default function PortalDashboard() {
           </div>
 
           {/* Progress Tracker Steps Card */}
-          <div className="rounded-[10px] border border-stroke bg-white p-6 shadow-1 dark:border-dark-3 dark:bg-gray-dark">
+          <div className="rounded-[10px] border border-stroke bg-white p-4 sm:p-6 shadow-1 dark:border-dark-3 dark:bg-gray-dark">
             <h3 className="text-base font-bold text-dark dark:text-white mb-5">
               Submission Checklist
             </h3>
             <div className="space-y-4">
               {steps.map((step, idx) => (
-                <div key={idx} className="flex items-center justify-between border-b border-stroke pb-3 last:border-0 last:pb-0 dark:border-dark-3">
-                  <div className="flex items-center gap-3">
+                <div key={idx} className="flex items-center justify-between gap-4 border-b border-stroke pb-3 last:border-0 last:pb-0 dark:border-dark-3">
+                  <div className="flex items-center gap-3 min-w-0">
                     {step.completed ? (
-                      <CheckCircle2 className="h-5 w-5 text-green" />
+                      <CheckCircle2 className="h-5 w-5 text-green shrink-0" />
                     ) : (
-                      <Circle className="h-5 w-5 text-stroke dark:text-dark-3" />
+                      <Circle className="h-5 w-5 text-stroke shrink-0 dark:text-dark-3" />
                     )}
-                    <span className={`text-sm font-medium ${step.completed ? "text-dark dark:text-white" : "text-dark-5"}`}>
+                    <span className={`text-xs sm:text-sm font-medium truncate ${step.completed ? "text-dark dark:text-white" : "text-dark-5"}`}>
                       {step.name}
                     </span>
                   </div>
-                  <span className="text-xs font-bold uppercase">
+                  <span className="text-[10px] sm:text-xs font-bold uppercase shrink-0">
                     {step.completed ? (
                       <span className="text-green">Complete</span>
                     ) : (
@@ -215,7 +250,7 @@ export default function PortalDashboard() {
 
         {/* Sidebar Panel */}
         <div className="col-span-12 lg:col-span-4 space-y-6">
-          <div className="rounded-[10px] border border-stroke bg-white p-6 shadow-1 dark:border-dark-3 dark:bg-gray-dark text-center">
+          <div className="hidden lg:block rounded-[10px] border border-stroke bg-white p-6 shadow-1 dark:border-dark-3 dark:bg-gray-dark text-center">
             <h3 className="text-base font-bold text-dark dark:text-white mb-2">
               Action Center
             </h3>
@@ -249,7 +284,7 @@ export default function PortalDashboard() {
             )}
           </div>
 
-          <div className="rounded-[10px] border border-stroke bg-white p-6 shadow-1 dark:border-dark-3 dark:bg-gray-dark">
+          <div className="rounded-[10px] border border-stroke bg-white p-4 sm:p-6 shadow-1 dark:border-dark-3 dark:bg-gray-dark">
             <h3 className="text-base font-bold text-dark dark:text-white mb-4">
               Miss Somali Guidelines
             </h3>
