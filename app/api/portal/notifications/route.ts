@@ -30,14 +30,14 @@ export async function GET() {
           userId: profile.id,
           title: "Welcome to Miss Somali Portal",
           message: "Marhaban! Thank you for registering for the Miss Somali 2026 Pageant. Complete your wizard attributes to officially submit your candidate file.",
-          type: NotificationType.system,
+          type: NotificationType.ANNOUNCEMENT,
           isRead: false
         },
         {
           userId: profile.id,
           title: "Required Photo Standards",
           message: "Please ensure your portraits are taken against neutral backgrounds with clear lighting. Profile and full-body files are mandatory guidelines.",
-          type: NotificationType.event,
+          type: NotificationType.ANNOUNCEMENT,
           isRead: false
         }
       ];

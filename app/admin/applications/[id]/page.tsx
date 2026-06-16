@@ -607,18 +607,6 @@ export default function ApplicationDetailPage({ params }: PageProps) {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-2 py-4">
-            <label className="block text-sm font-medium text-dark dark:text-white">
-              Optional feedback or notes to candidate:
-            </label>
-            <Textarea
-              placeholder="E.g., Congratulations! You have been shortlisted..."
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              rows={3}
-            />
-          </div>
-
           <DialogFooter>
             <Button
               variant="outline"

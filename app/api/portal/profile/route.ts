@@ -61,7 +61,8 @@ export async function POST(request: NextRequest) {
         data: {
           fullName: fullName || profile.fullName,
           phone: phone || profile.phone,
-          country: country || profile.country
+          country: country || profile.country,
+          email: session.user.email
         }
       });
     } else {
@@ -69,6 +70,7 @@ export async function POST(request: NextRequest) {
         data: {
           authUserId: session.user.id,
           fullName: fullName || session.user.name || "Contestant",
+          email: session.user.email,
           phone: phone || "",
           country: country || "Somalia",
           role: "contestant"

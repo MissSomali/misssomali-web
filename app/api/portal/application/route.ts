@@ -164,8 +164,8 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: "Application draft not found. Please initialize first." }, { status: 404 });
     }
 
-    // Only allow editing when status is DRAFT
-    if (profile.application.status !== "draft" || profile.application.isSubmitted) {
+    // Only lock editing when application is submitted
+    if (profile.application.isSubmitted) {
       return NextResponse.json({ error: "Application is already submitted and locked." }, { status: 400 });
     }
 

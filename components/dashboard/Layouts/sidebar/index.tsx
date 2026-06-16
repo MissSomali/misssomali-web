@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { NAV_DATA } from "./data";
-import { ArrowLeftIcon, ChevronUp, HomeIcon, User, Alphabet, Table } from "./icons";
+import { ArrowLeftIcon, ChevronUp, HomeIcon, User, Alphabet, Table, BellIcon } from "./icons";
 import { MenuItem } from "./menu-item";
 import { useSidebarContext } from "./sidebar-context";
 
@@ -36,6 +36,12 @@ const PORTAL_NAV_DATA = [
         title: "Profile",
         url: "/profile",
         icon: User,
+        items: [],
+      },
+      {
+        title: "Notifications",
+        url: "/notifications",
+        icon: BellIcon,
         items: [],
       },
     ],

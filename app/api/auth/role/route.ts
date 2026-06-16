@@ -37,10 +37,23 @@ export async function GET() {
         data: {
           authUserId: session.user.id,
           fullName: session.user.name || "Contestant",
+          email: session.user.email,
           phone: "",
           country: "Somalia",
           role: "contestant",
         },
+        include: {
+          photos: {
+            where: { type: "profile" },
+            take: 1
+          }
+        }
+      });
+    } else if (!profile.email && session.user.email) {
+      // Backfill email address if not set
+      profile = await prisma.userProfile.update({
+        where: { id: profile.id },
+        data: { email: session.user.email },
         include: {
           photos: {
             where: { type: "profile" },
