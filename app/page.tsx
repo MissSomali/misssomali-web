@@ -5,7 +5,6 @@ import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
-import HowItWorks from "@/components/HowItWorks";
 import GrandFinaleEvent from "@/components/GrandFinaleEvent";
 import BlogsSection from "@/components/BlogsSection";
 import { Calendar, MapPin, ArrowRight } from "lucide-react";
@@ -446,8 +445,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        <HowItWorks />
 
         <GrandFinaleEvent />
 

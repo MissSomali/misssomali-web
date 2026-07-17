@@ -17,6 +17,7 @@ export default function Footer({ className }: FooterProps) {
 
   const quickLinks = [
     { name: "Home", href: "/" },
+    { name: "How to Apply", href: "/how-to-apply" },
     { name: "About Us", href: "/about" },
     { name: "Contestants", href: "/#contestants" },
     { name: "Events", href: "/#events" },
@@ -24,9 +25,9 @@ export default function Footer({ className }: FooterProps) {
   ];
 
   const processLinks = [
-    { name: "Cultural Heritage", href: "/about" },
-    { name: "Leadership & Impact", href: "/about" },
-    { name: "Grand Coronation", href: "/about" },
+    { name: "Eligibility", href: "/how-to-apply#eligibility" },
+    { name: "Requirements", href: "/how-to-apply#requirements" },
+    { name: "Steps", href: "/how-to-apply#steps" },
     { name: "Apply Now", href: "/portal" },
   ];
 
