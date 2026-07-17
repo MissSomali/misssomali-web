@@ -182,37 +182,13 @@ export default function ApplicationsPage() {
     setPage(1);
   };
 
-  const handleDownload = async () => {
-    setDownloading(true);
-    const toastId = toast.loading("Generating applications PDF report...");
-    try {
-      const params = new URLSearchParams();
-      if (statusFilter && statusFilter !== "all") params.set("status", statusFilter);
-      if (countryFilter && countryFilter !== "all") params.set("country", countryFilter);
-      if (searchQuery) params.set("search", searchQuery);
-      
-      const res = await fetch(`/api/admin/download-applications-pdf?${params.toString()}`);
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.error || "Failed to generate PDF");
-      }
-      
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `applications-${new Date().toISOString().split("T")[0]}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-      toast.success("PDF report downloaded successfully!", { id: toastId });
-    } catch (err: any) {
-      console.error("Download error:", err);
-      toast.error(err.message || "Failed to download PDF", { id: toastId });
-    } finally {
-      setDownloading(false);
-    }
+  const handleDownload = () => {
+    const params = new URLSearchParams();
+    if (statusFilter && statusFilter !== "all") params.set("status", statusFilter);
+    if (countryFilter && countryFilter !== "all") params.set("country", countryFilter);
+    if (searchQuery) params.set("search", searchQuery);
+    
+    window.open(`/api/admin/download-applications-pdf?${params.toString()}`, '_blank');
   };
 
   return (

@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { verifyAdmin } from "@/lib/admin-auth";
 import { Prisma, Status } from "@prisma/client";
-import puppeteer from "puppeteer";
 
 function calculateAge(dateOfBirth: Date | string | null): string {
   if (!dateOfBirth) return "—";
@@ -339,42 +338,24 @@ export async function GET(request: NextRequest) {
       `;
     }).join('')}
   </div>
+  <script>
+    window.onload = function() {
+      // Trigger the browser's print dialog, which offers standard PDF generation/printing options
+      window.print();
+    };
+  </script>
 </body>
 </html>
 `;
 
-    // Launch puppeteer
-    const browser = await puppeteer.launch({
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      headless: true,
-    });
-
-    const page = await browser.newPage();
-    await page.setContent(htmlContent, { waitUntil: "load" });
-    
-    const pdfBuffer = await page.pdf({
-      format: "A4",
-      printBackground: true,
-      margin: {
-        top: "15mm",
-        bottom: "15mm",
-        left: "15mm",
-        right: "15mm",
-      },
-    });
-
-    await browser.close();
-
-    return new NextResponse(pdfBuffer as any, {
+    return new NextResponse(htmlContent, {
       status: 200,
       headers: {
-        "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="applications-report-${new Date().toISOString().split("T")[0]}.pdf"`,
-        "Content-Length": pdfBuffer.length.toString(),
+        "Content-Type": "text/html",
       },
     });
   } catch (error) {
-    console.error("PDF generation error:", error);
-    return NextResponse.json({ error: "Failed to generate PDF document." }, { status: 500 });
+    console.error("HTML report generation error:", error);
+    return NextResponse.json({ error: "Failed to generate report document." }, { status: 500 });
   }
 }
