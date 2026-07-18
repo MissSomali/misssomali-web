@@ -6,6 +6,7 @@
 		"command": "npm run build"
 	},
 	"compatibility_date": "2026-07-17",
+	"minify": true,
 	"compatibility_flags": [
 		"nodejs_compat",
 		"global_fetch_strictly_public"
