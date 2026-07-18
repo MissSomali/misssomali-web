@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import { render } from "@react-email/render";
+import { renderToHtml } from "./render-to-html";
 import { MissSomaliEmail } from "./email-template";
 import React from "react";
 
@@ -36,7 +36,7 @@ export async function sendNotificationEmail({
     }
 
     // Compile React Email template to static HTML
-    const htmlContent = await render(
+    const htmlContent = `<!DOCTYPE html>${renderToHtml(
       React.createElement(MissSomaliEmail, {
         fullName,
         title,
@@ -45,7 +45,7 @@ export async function sendNotificationEmail({
         buttonText,
         buttonUrl,
       })
-    );
+    )}`;
 
     const data = await resend.emails.send({
       from: "Miss Somali <onboarding@resend.dev>",

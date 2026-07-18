@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Loader2, User, Phone, MapPin, Mail, Check, CheckCircle, Camera } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { usePortal } from "../layout";
+import { usePortal } from "../portal-context";
 import { Button } from "@/components/ui/button";
 
 type ProfileData = {

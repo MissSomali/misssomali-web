@@ -1,34 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback, createContext, useContext } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth/client";
 import { Loader2 } from "lucide-react";
 import { DashboardShell } from "@/components/dashboard/Layouts/DashboardShell";
-
-interface UserProfileData {
-  authenticated: boolean;
-  authUserId: string;
-  email: string;
-  fullName: string;
-  role: string;
-  profileId: string;
-  profilePhotoUrl?: string;
-}
-
-interface PortalContextType {
-  profile: UserProfileData | null;
-  refreshProfile: () => Promise<void>;
-  loading: boolean;
-}
-
-const PortalContext = createContext<PortalContextType>({
-  profile: null,
-  refreshProfile: async () => {},
-  loading: true
-});
-
-export const usePortal = () => useContext(PortalContext);
+import { PortalContext, UserProfileData } from "./portal-context";
 
 export default function PortalLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();

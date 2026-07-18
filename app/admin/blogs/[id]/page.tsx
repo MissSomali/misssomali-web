@@ -16,7 +16,11 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RichTextEditor } from "@/components/rich-text-editor";
+import dynamic from "next/dynamic";
+const RichTextEditor = dynamic(
+  () => import("@/components/rich-text-editor").then((mod) => mod.RichTextEditor),
+  { ssr: false }
+);
 import { Progress } from "@/components/ui/progress";
 
 interface PageProps {

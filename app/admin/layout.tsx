@@ -27,7 +27,7 @@ const AdminContext = createContext<AdminContextType>({
   loading: true
 });
 
-export const useAdmin = () => useContext(AdminContext);
+const useAdmin = () => useContext(AdminContext);
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();

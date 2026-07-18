@@ -10,5 +10,5 @@ const config = defineCloudflareConfig({
 
 export default {
 	...config,
-	buildCommand: "npx next build",
+	buildCommand: "npx next build --webpack",
 };
